@@ -270,9 +270,11 @@
 
   let mode = 'contact';
   let prevFocus = null;
+  let submitting = false;
 
   function openModal(m) {
     mode = m;
+    submitting = false;
     const cfg = MODES[m] || MODES.contact;
     eyebrowEl.textContent   = cfg.eyebrow;
     titleEl.textContent     = cfg.title;
@@ -282,6 +284,9 @@
     form.hidden = false;
     const success = backdrop.querySelector('.modal-success');
     if (success) success.remove();
+    // Re-enable submit button in case a previous session disabled it
+    const submitBtn = form.querySelector('[type="submit"]');
+    if (submitBtn) submitBtn.disabled = false;
 
     prevFocus = document.activeElement;
     backdrop.hidden = false;
@@ -325,10 +330,25 @@
     }
   });
 
-  // Submit — build mailto and open; show success state
+  // Submit — validate, guard against re-submission, build mailto, show success state
   form.addEventListener('submit', e => {
     e.preventDefault();
+    if (submitting) return;
+
     const data = Object.fromEntries(new FormData(form));
+
+    // Participant type is required — show a native validation message if missing
+    if (!data.type) {
+      const typeEl = document.getElementById('f-type');
+      if (typeEl) { typeEl.focus(); typeEl.reportValidity(); }
+      return;
+    }
+
+    // Lock out further submissions and disable the button for visual feedback
+    submitting = true;
+    const submitBtn = form.querySelector('[type="submit"]');
+    if (submitBtn) submitBtn.disabled = true;
+
     const cfg  = MODES[mode] || MODES.contact;
 
     const subject = encodeURIComponent(`${cfg.subject} — ${data.firm || 'Unknown Firm'}`);

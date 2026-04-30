@@ -735,8 +735,8 @@ description: "Watershed Technologies operates a 15ms broker-neutral options ATS 
           <input type="tel" id="f-phone" name="phone" placeholder="+1 312 555 0100" autocomplete="tel">
         </div>
         <div class="form-field">
-          <label for="f-type">Participant Type</label>
-          <select id="f-type" name="type">
+          <label for="f-type">Participant Type <span class="form-req" aria-hidden="true">*</span></label>
+          <select id="f-type" name="type" required>
             <option value="" disabled selected>Select…</option>
             <option value="Order Sender">Order Sender</option>
             <option value="Liquidity Provider">Liquidity Provider</option>
