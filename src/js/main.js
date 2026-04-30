@@ -12,7 +12,7 @@
         io.unobserve(e.target);
       }
     });
-  }, { threshold: 0.2, rootMargin: '0px 0px -18% 0px' });
+  }, { threshold: 0.08, rootMargin: '0px 0px -4% 0px' });
 
   // Auto-stagger direct children that carry [data-reveal]
   const stagger = (selector, step = 80) => {
