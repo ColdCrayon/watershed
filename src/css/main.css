@@ -1264,16 +1264,22 @@ footer {
   background: var(--surface);
   border: 1px solid var(--rule);
   border-radius: 24px;
-  padding: clamp(32px, 4vw, 56px);
   max-width: 600px;
   width: 100%;
-  max-height: 90dvh;
-  overflow-y: auto;
+  overflow: hidden;
   position: relative;
   animation: modalSlideIn .3s cubic-bezier(.2, .8, .2, 1);
   box-shadow:
     0 2px 0 rgba(0,0,0,.04),
     0 48px 96px -24px color-mix(in oklab, var(--ink) 48%, transparent);
+}
+
+/* Inner scroll container — keeps overscroll clipped to the rounded corners */
+.modal-body {
+  padding: clamp(32px, 4vw, 56px);
+  max-height: 90dvh;
+  overflow-y: auto;
+  overscroll-behavior: contain;
   scrollbar-width: thin;
   scrollbar-color: var(--rule) transparent;
 }
@@ -1285,6 +1291,7 @@ footer {
 .modal-close {
   position: absolute;
   top: 20px; right: 20px;
+  z-index: 1;
   width: 36px; height: 36px;
   border-radius: 50%;
   border: 1px solid var(--rule);
@@ -1358,6 +1365,19 @@ footer {
 .form-field textarea:focus {
   border-color: var(--primary);
   box-shadow: 0 0 0 3px color-mix(in oklab, var(--primary) 15%, transparent);
+}
+.form-field input[aria-invalid="true"],
+.form-field select[aria-invalid="true"],
+.form-field textarea[aria-invalid="true"] {
+  border-color: oklch(0.55 0.18 25);
+  box-shadow: 0 0 0 3px oklch(0.55 0.18 25 / 0.12);
+}
+.field-error {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: .06em;
+  color: oklch(0.50 0.18 25);
+  margin-top: 2px;
 }
 .form-field input::placeholder,
 .form-field textarea::placeholder { color: var(--ink-3); }
