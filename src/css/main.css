@@ -1280,9 +1280,9 @@ footer {
   max-height: 90dvh;
   overflow-y: auto;
   overscroll-behavior: contain;
-  scrollbar-width: thin;
-  scrollbar-color: var(--rule) transparent;
+  scrollbar-width: none;
 }
+.modal-body::-webkit-scrollbar { display: none; }
 @keyframes modalSlideIn {
   from { transform: translateY(18px); opacity: 0; }
   to   { transform: none; opacity: 1; }
