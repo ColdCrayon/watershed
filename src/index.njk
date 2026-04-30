@@ -69,7 +69,7 @@ description: "Watershed Technologies operates a 15ms broker-neutral options ATS 
         <div class="sub">A 15ms broker-neutral auction · MiFID II · CAT compliant</div>
 
         <div class="hero-cta">
-          <a class="btn btn-primary" href="mailto:info@watershedtech.us">
+          <a class="btn btn-primary" href="mailto:info@watershedtech.us" data-modal="contact">
             Contact Watershed
             <svg class="arrow" width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
               <path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
@@ -673,7 +673,7 @@ description: "Watershed Technologies operates a 15ms broker-neutral options ATS 
               <path d="M3 11L11 3M11 3H5M11 3v6" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
             </svg>
           </a>
-          <a class="cta-btn" href="mailto:info@watershedtech.us">
+          <a class="cta-btn" href="mailto:info@watershedtech.us" data-modal="onboarding">
             Schedule onboarding
             <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
               <path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
@@ -684,3 +684,85 @@ description: "Watershed Technologies operates a 15ms broker-neutral options ATS 
     </div>
   </div>
 </section>
+
+
+<!-- ============================================================
+     CONTACT / ONBOARDING MODAL
+     ============================================================ -->
+<div class="modal-backdrop" id="modalBackdrop" role="dialog" aria-modal="true" aria-labelledby="modalTitle" hidden>
+  <div class="modal">
+
+    <button class="modal-close" id="modalClose" aria-label="Close dialog" type="button">
+      <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true">
+        <path d="M1 1l10 10M11 1L1 11" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+      </svg>
+    </button>
+
+    <span class="eyebrow" id="modalEyebrow">Get in touch</span>
+    <h2 id="modalTitle" style="margin-top:18px;font-size:clamp(28px,2.8vw,40px);font-variation-settings:'opsz' 60">Contact Watershed</h2>
+    <p id="modalDesc" class="lead" style="margin-top:14px;font-size:15px;max-width:50ch">Fill in your details and we'll reach out to discuss how Watershed fits your trading workflow.</p>
+
+    <form class="modal-form" id="contactForm" novalidate>
+
+      <div class="form-row">
+        <div class="form-field">
+          <label for="f-name">Full Name <span class="form-req" aria-hidden="true">*</span></label>
+          <input type="text" id="f-name" name="name" required placeholder="Jane Smith" autocomplete="name">
+        </div>
+        <div class="form-field">
+          <label for="f-firm">Firm / Institution <span class="form-req" aria-hidden="true">*</span></label>
+          <input type="text" id="f-firm" name="firm" required placeholder="Acme Capital" autocomplete="organization">
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-field">
+          <label for="f-title">Title / Role <span class="form-req" aria-hidden="true">*</span></label>
+          <input type="text" id="f-title" name="title" required placeholder="Head of Options Trading" autocomplete="organization-title">
+        </div>
+        <div class="form-field">
+          <label for="f-email">Email <span class="form-req" aria-hidden="true">*</span></label>
+          <input type="email" id="f-email" name="email" required placeholder="jane@acmecapital.com" autocomplete="email">
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-field">
+          <label for="f-phone">
+            Phone
+            <span class="form-opt">(optional)</span>
+          </label>
+          <input type="tel" id="f-phone" name="phone" placeholder="+1 312 555 0100" autocomplete="tel">
+        </div>
+        <div class="form-field">
+          <label for="f-type">Participant Type</label>
+          <select id="f-type" name="type">
+            <option value="" disabled selected>Select…</option>
+            <option value="Order Sender">Order Sender</option>
+            <option value="Liquidity Provider">Liquidity Provider</option>
+            <option value="General Inquiry">General / Other Inquiry</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-field">
+        <label for="f-message">
+          Message
+          <span class="form-opt">(optional)</span>
+        </label>
+        <textarea id="f-message" name="message" placeholder="Any context on your order flow, size, or integration requirements…"></textarea>
+      </div>
+
+      <div class="form-footer">
+        <button class="form-submit" type="submit">
+          <span id="modalSubmitLabel">Send inquiry</span>
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+            <path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+        <p class="form-note">Your details are used only to respond to this inquiry — no mailing lists.</p>
+      </div>
+
+    </form>
+  </div>
+</div>

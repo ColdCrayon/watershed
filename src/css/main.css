@@ -1239,6 +1239,209 @@ footer {
 }
 
 /* =============================================================
+   MODAL — contact / onboarding form
+   ============================================================= */
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  background: color-mix(in oklab, var(--ink) 72%, transparent);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px var(--gutter);
+  animation: modalFadeIn .22s ease;
+}
+.modal-backdrop[hidden] { display: none; }
+@keyframes modalFadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+.modal {
+  background: var(--surface);
+  border: 1px solid var(--rule);
+  border-radius: 24px;
+  padding: clamp(32px, 4vw, 56px);
+  max-width: 600px;
+  width: 100%;
+  max-height: 90dvh;
+  overflow-y: auto;
+  position: relative;
+  animation: modalSlideIn .3s cubic-bezier(.2, .8, .2, 1);
+  box-shadow:
+    0 2px 0 rgba(0,0,0,.04),
+    0 48px 96px -24px color-mix(in oklab, var(--ink) 48%, transparent);
+  scrollbar-width: thin;
+  scrollbar-color: var(--rule) transparent;
+}
+@keyframes modalSlideIn {
+  from { transform: translateY(18px); opacity: 0; }
+  to   { transform: none; opacity: 1; }
+}
+
+.modal-close {
+  position: absolute;
+  top: 20px; right: 20px;
+  width: 36px; height: 36px;
+  border-radius: 50%;
+  border: 1px solid var(--rule);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--ink-3);
+  flex-shrink: 0;
+  transition: border-color .2s ease, color .2s ease, background .2s ease;
+}
+.modal-close:hover { border-color: var(--ink); color: var(--ink); background: var(--bg); }
+
+/* Form layout */
+.modal-form {
+  margin-top: 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+@media (max-width: 540px) {
+  .form-row { grid-template-columns: 1fr; }
+}
+
+.form-field {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+.form-field label {
+  font-family: var(--mono);
+  font-size: 10.5px;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+.form-req { color: var(--accent); }
+.form-opt {
+  font-size: 9.5px;
+  letter-spacing: .06em;
+  text-transform: none;
+  color: var(--ink-3);
+}
+
+.form-field input,
+.form-field select,
+.form-field textarea {
+  font-family: var(--body);
+  font-size: 15px;
+  color: var(--ink);
+  background: var(--bg);
+  border: 1px solid var(--rule);
+  border-radius: 8px;
+  padding: 10px 14px;
+  transition: border-color .2s ease, box-shadow .2s ease;
+  outline: none;
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+}
+.form-field input:focus,
+.form-field select:focus,
+.form-field textarea:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px color-mix(in oklab, var(--primary) 15%, transparent);
+}
+.form-field input::placeholder,
+.form-field textarea::placeholder { color: var(--ink-3); }
+.form-field textarea {
+  resize: vertical;
+  min-height: 96px;
+  line-height: 1.55;
+}
+.form-field select { cursor: pointer; }
+
+/* Select chevron */
+.form-field select {
+  background-image: url("data:image/svg+xml,%3Csvg width='10' height='6' viewBox='0 0 10 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%23888' stroke-width='1.4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+  padding-right: 36px;
+}
+
+.form-footer {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  flex-wrap: wrap;
+  margin-top: 6px;
+}
+.form-submit {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 13px 22px;
+  border-radius: 999px;
+  font-size: 14px;
+  font-weight: 500;
+  background: var(--ink);
+  color: var(--bg);
+  border: none;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background .22s ease;
+  flex-shrink: 0;
+}
+.form-submit:hover { background: var(--primary); }
+
+.form-note {
+  font-family: var(--mono);
+  font-size: 10.5px;
+  letter-spacing: .06em;
+  color: var(--ink-3);
+  line-height: 1.5;
+}
+
+/* Success state */
+.modal-success {
+  text-align: center;
+  padding: 40px 24px 16px;
+}
+.modal-success .success-icon {
+  width: 48px; height: 48px;
+  border-radius: 50%;
+  background: var(--bg-alt);
+  border: 1px solid var(--rule);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 24px;
+}
+.modal-success h3 {
+  font-family: var(--display);
+  font-size: 22px;
+  font-weight: 500;
+  letter-spacing: -0.015em;
+  color: var(--ink);
+  margin-bottom: 8px;
+  font-variation-settings: "opsz" 32;
+}
+.modal-success p {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: .06em;
+  color: var(--ink-3);
+  margin-bottom: 24px;
+}
+
+/* =============================================================
    NUMERAL TICKER (hero panel animation)
    ============================================================= */
 .ticker {

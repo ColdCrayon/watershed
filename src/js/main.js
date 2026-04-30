@@ -239,3 +239,128 @@
     }
   });
 })();
+
+// Contact / onboarding modal form
+(() => {
+  const backdrop    = document.getElementById('modalBackdrop');
+  const closeBtn    = document.getElementById('modalClose');
+  const form        = document.getElementById('contactForm');
+  const titleEl     = document.getElementById('modalTitle');
+  const eyebrowEl   = document.getElementById('modalEyebrow');
+  const descEl      = document.getElementById('modalDesc');
+  const submitLabel = document.getElementById('modalSubmitLabel');
+  if (!backdrop) return;
+
+  const MODES = {
+    contact: {
+      eyebrow: 'Get in touch',
+      title:   'Contact Watershed',
+      desc:    "Fill in your details and we'll reach out to discuss how Watershed fits your trading workflow.",
+      submit:  'Send inquiry',
+      subject: '[Watershed ATS] Inquiry',
+    },
+    onboarding: {
+      eyebrow: 'Start the conversation',
+      title:   'Schedule Onboarding',
+      desc:    'Share a few details and our team will follow up to walk you through ATS connectivity and integration.',
+      submit:  'Request onboarding',
+      subject: '[Watershed ATS] Onboarding Request',
+    },
+  };
+
+  let mode = 'contact';
+  let prevFocus = null;
+
+  function openModal(m) {
+    mode = m;
+    const cfg = MODES[m] || MODES.contact;
+    eyebrowEl.textContent   = cfg.eyebrow;
+    titleEl.textContent     = cfg.title;
+    descEl.textContent      = cfg.desc;
+    submitLabel.textContent = cfg.submit;
+    form.reset();
+    form.hidden = false;
+    const success = backdrop.querySelector('.modal-success');
+    if (success) success.remove();
+
+    prevFocus = document.activeElement;
+    backdrop.hidden = false;
+    document.body.style.overflow = 'hidden';
+    closeBtn.focus();
+  }
+
+  function closeModal() {
+    backdrop.hidden = true;
+    document.body.style.overflow = '';
+    if (prevFocus) prevFocus.focus();
+  }
+
+  // Trigger elements
+  document.querySelectorAll('[data-modal]').forEach(el => {
+    el.addEventListener('click', e => {
+      e.preventDefault();
+      openModal(el.dataset.modal);
+    });
+  });
+
+  // Close affordances
+  closeBtn.addEventListener('click', closeModal);
+  backdrop.addEventListener('click', e => { if (e.target === backdrop) closeModal(); });
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape' && !backdrop.hidden) closeModal();
+  });
+
+  // Focus trap
+  backdrop.addEventListener('keydown', e => {
+    if (e.key !== 'Tab') return;
+    const els = Array.from(backdrop.querySelectorAll(
+      'button:not([disabled]), [href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])'
+    ));
+    const first = els[0];
+    const last  = els[els.length - 1];
+    if (e.shiftKey) {
+      if (document.activeElement === first) { e.preventDefault(); last.focus(); }
+    } else {
+      if (document.activeElement === last)  { e.preventDefault(); first.focus(); }
+    }
+  });
+
+  // Submit — build mailto and open; show success state
+  form.addEventListener('submit', e => {
+    e.preventDefault();
+    const data = Object.fromEntries(new FormData(form));
+    const cfg  = MODES[mode] || MODES.contact;
+
+    const subject = encodeURIComponent(`${cfg.subject} — ${data.firm || 'Unknown Firm'}`);
+    const bodyText = [
+      `Name:              ${data.name  || '—'}`,
+      `Firm:              ${data.firm  || '—'}`,
+      `Title:             ${data.title || '—'}`,
+      `Email:             ${data.email || '—'}`,
+      `Phone:             ${data.phone || 'Not provided'}`,
+      `Participant type:  ${data.type  || 'Not specified'}`,
+      '',
+      data.message ? `Notes:\n${data.message}` : 'No additional notes.',
+    ].join('\n');
+    const body = encodeURIComponent(bodyText);
+
+    window.location.href = `mailto:info@watershedtech.us?subject=${subject}&body=${body}`;
+
+    // Success state
+    form.hidden = true;
+    const div = document.createElement('div');
+    div.className = 'modal-success';
+    div.innerHTML = `
+      <div class="success-icon">
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+          <path d="M4 10l4 4 8-8" stroke="var(--accent)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <h3>Your email client should open now.</h3>
+      <p>Review the pre-filled message and send it to complete your inquiry.</p>
+      <button class="form-submit" id="modalDoneBtn" type="button">Done</button>
+    `;
+    form.parentNode.appendChild(div);
+    document.getElementById('modalDoneBtn').addEventListener('click', closeModal);
+  });
+})();
