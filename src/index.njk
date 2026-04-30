@@ -1,0 +1,686 @@
+---
+layout: base.njk
+title: "Watershed Technologies — Real Liquidity for the Options Markets"
+description: "Watershed Technologies operates a 15ms broker-neutral options ATS — discretionary, compliant, and connected to national exchanges."
+---
+
+<!-- ============================================================
+     HERO
+     ============================================================ -->
+<section class="hero">
+  <div class="hero-bg" aria-hidden="true"></div>
+
+  <!-- Parallax depth illustration -->
+  <div class="depth" id="depth" aria-hidden="true">
+    <svg viewBox="0 0 1200 800" preserveAspectRatio="xMidYMid slice">
+      <defs>
+        <radialGradient id="glow" cx="50%" cy="50%" r="50%">
+          <stop offset="0%"   stop-color="oklch(0.74 0.14 210)" stop-opacity="0.45"/>
+          <stop offset="100%" stop-color="oklch(0.74 0.14 210)" stop-opacity="0"/>
+        </radialGradient>
+        <radialGradient id="glow2" cx="50%" cy="50%" r="50%">
+          <stop offset="0%"   stop-color="oklch(0.32 0.045 215)" stop-opacity="0.55"/>
+          <stop offset="100%" stop-color="oklch(0.32 0.045 215)" stop-opacity="0"/>
+        </radialGradient>
+      </defs>
+      <!-- Far: faint grid -->
+      <g class="layer" data-depth="6">
+        <g class="grid" opacity="0.5">
+          <path d="M0 200 H1200 M0 400 H1200 M0 600 H1200"/>
+          <path d="M150 0 V800 M450 0 V800 M750 0 V800 M1050 0 V800"/>
+        </g>
+      </g>
+      <!-- Mid: orbital rings -->
+      <g class="layer" data-depth="14" transform="translate(960 220)">
+        <ellipse class="ring"   cx="0" cy="0" rx="320" ry="90"/>
+        <ellipse class="ring"   cx="0" cy="0" rx="260" ry="72" transform="rotate(18)"/>
+        <ellipse class="ring b" cx="0" cy="0" rx="200" ry="56" transform="rotate(-22)"/>
+        <circle cx="180"  cy="-40" r="3"   fill="oklch(0.74 0.14 210)"/>
+        <circle cx="-220" cy="30"  r="2.4" fill="oklch(0.32 0.045 215)"/>
+      </g>
+      <!-- Near: glow blobs -->
+      <g class="layer blur" data-depth="24">
+        <circle cx="1040" cy="180" r="180" fill="url(#glow)"/>
+        <circle cx="160"  cy="640" r="220" fill="url(#glow2)"/>
+      </g>
+      <!-- Nearest: floating tick labels -->
+      <g class="layer" data-depth="36"
+         font-family="Geist Mono, ui-monospace, monospace"
+         font-size="11" fill="oklch(0.52 0.015 230)">
+        <text x="880" y="320" letter-spacing="2">+0 MS · INTAKE</text>
+        <text x="760" y="500" letter-spacing="2">+8 MS · LP RESPONSE</text>
+        <text x="160" y="180" letter-spacing="2" opacity="0.6">NBBO 1.16 / 1.28</text>
+        <text x="100" y="320" letter-spacing="2" opacity="0.5">CROSS → EXCH</text>
+      </g>
+    </svg>
+  </div>
+
+  <div class="container">
+    <div class="hero-grid">
+
+      <!-- Left: headline + CTAs -->
+      <div>
+        <span class="eyebrow">Alternative Trading System · Chicago</span>
+        <h1 class="reveal" style="margin-top:24px">
+          Providing access to <em class="ital" style="color:var(--primary)">real liquidity</em>
+          in the option markets
+          <span style="color:var(--ink-3);font-weight:300" class="ital">— with an ATS.</span>
+        </h1>
+        <div class="sub">A 15ms broker-neutral auction · MiFID II · CAT compliant</div>
+
+        <div class="hero-cta">
+          <a class="btn btn-primary" href="mailto:info@watershedtech.us">
+            Contact Watershed
+            <svg class="arrow" width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+              <path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </a>
+          <a class="btn btn-ghost" href="#how">See how it works</a>
+        </div>
+
+        <div class="hero-meta">
+          <div class="cell">
+            <span class="label">Execution latency</span>
+            <span class="val">15&thinsp;ms <span style="color:var(--ink-3);font-family:var(--mono);font-size:13px">end-to-end</span></span>
+          </div>
+          <div class="cell">
+            <span class="label">Settlement</span>
+            <span class="val">National Exchanges <span style="color:var(--ink-3);font-family:var(--mono);font-size:13px">no extra clearing</span></span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right: simulated ATS data panel -->
+      <aside class="data-panel" aria-label="Simulated ATS execution panel">
+        <div class="panel-head">
+          <span>ATS / Auction Tape</span>
+          <span class="live"><span class="dot" aria-hidden="true"></span>Simulated</span>
+        </div>
+
+        <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:18px">
+          <div>
+            <div style="font-family:var(--mono);font-size:11px;color:var(--ink-3);letter-spacing:.1em;text-transform:uppercase">Sample Order</div>
+            <div style="font-family:var(--display);font-size:22px;font-weight:500;letter-spacing:-0.015em;margin-top:6px">Buy 100 XYZ May 80C</div>
+          </div>
+          <div style="text-align:right">
+            <div style="font-family:var(--mono);font-size:11px;color:var(--ink-3);letter-spacing:.1em;text-transform:uppercase">NBBO</div>
+            <div style="font-family:var(--mono);font-size:14px;color:var(--ink);margin-top:6px">1.16 / 1.28</div>
+          </div>
+        </div>
+
+        <!-- Bid/ask ladder — populated by main.js -->
+        <div id="ladder" style="display:grid;grid-template-columns:repeat(7,1fr);gap:6px;height:120px;align-items:end;padding:10px 0;border-top:1px solid var(--rule-2);border-bottom:1px solid var(--rule-2)" aria-hidden="true"></div>
+
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:1px;background:var(--rule-2);margin-top:18px;border:1px solid var(--rule-2)">
+          <div style="background:var(--surface);padding:14px">
+            <div style="font-family:var(--mono);font-size:10px;letter-spacing:.12em;color:var(--ink-3);text-transform:uppercase">LP1</div>
+            <div style="font-family:var(--mono);font-size:14px;color:var(--ink);margin-top:6px">1.23 ×100</div>
+          </div>
+          <div style="background:var(--surface);padding:14px">
+            <div style="font-family:var(--mono);font-size:10px;letter-spacing:.12em;color:var(--ink-3);text-transform:uppercase">LP2</div>
+            <div style="font-family:var(--mono);font-size:14px;color:var(--ink-3);margin-top:6px">—</div>
+          </div>
+          <div style="background:var(--surface);padding:14px;position:relative">
+            <div style="font-family:var(--mono);font-size:10px;letter-spacing:.12em;color:var(--accent);text-transform:uppercase">Match</div>
+            <div style="font-family:var(--mono);font-size:14px;color:var(--ink);margin-top:6px">@ 1.225</div>
+            <div style="position:absolute;right:14px;top:14px;width:6px;height:6px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 3px color-mix(in oklab, var(--accent) 25%, transparent)" aria-hidden="true"></div>
+          </div>
+        </div>
+
+        <div style="display:flex;justify-content:space-between;font-family:var(--mono);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3);margin-top:16px">
+          <span>Saved · <span style="color:var(--ink)">$0.005 / contract</span></span>
+          <span>Cross @ exchange · <span style="color:var(--ink)">14&thinsp;ms</span></span>
+        </div>
+      </aside>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     § 01 — PILLARS / SOLUTION
+     ============================================================ -->
+<section id="solutions">
+  <div class="container">
+    <div class="section-head" data-reveal>
+      <div class="meta">§ 01 / Solution</div>
+      <div>
+        <span class="eyebrow">The Watershed Solution</span>
+        <h2 style="margin-top:18px;max-width:18ch">An intelligent ATS for institutional options flow.</h2>
+        <p class="lead" style="margin-top:18px">Three principles govern every order routed through Watershed — discretion, minimized impact, and a deterministic path to the listed markets. No high-touch desk. No information leakage. No preferential routing.</p>
+      </div>
+    </div>
+
+    <div class="pillars">
+      <article class="pillar" data-reveal>
+        <div class="pill-head">
+          <span class="num">01</span>
+          <span class="cat">Discretion</span>
+        </div>
+        <h3>Discreet, Complete, Compliant</h3>
+        <ul>
+          <li>Clients control who can see orders and their ultimate price is not revealed to Liquidity Providers.</li>
+          <li>All trades are executed on National Exchanges — no need for additional clearing arrangements.</li>
+          <li>Transaction data is fully compliant with MiFID II and CAT reporting requirements.</li>
+        </ul>
+      </article>
+
+      <article class="pillar" data-reveal>
+        <div class="pill-head">
+          <span class="num">02</span>
+          <span class="cat">Market Impact</span>
+        </div>
+        <h3>Minimized Market Impact</h3>
+        <ul>
+          <li>Liquidity Providers selected based on their ability to quote and trade size in volatility markets across the entire term structure.</li>
+          <li>Clients control both the information contained in the order and its path to the listed markets.</li>
+          <li>Third-party surveillance systems ensure client orders are not moving markets outside the ATS.</li>
+        </ul>
+      </article>
+
+      <article class="pillar" data-reveal>
+        <div class="pill-head">
+          <span class="num">03</span>
+          <span class="cat">Order Flow</span>
+        </div>
+        <h3>How Orders Flow</h3>
+        <ul>
+          <li>Orders are routed into a private auction with a select pool of Liquidity Providers.</li>
+          <li>Matched Orders are sent to an exchange as a cross ticket with an additional chance for client price improvement at the exchange.</li>
+          <li>Entire process is completed faster than any high-touch solution.</li>
+        </ul>
+      </article>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     § 02 — FLOW DIAGRAM / HOW IT WORKS
+     ============================================================ -->
+<section id="how" style="background:var(--bg-alt)">
+  <div class="container">
+    <div class="section-head" data-reveal>
+      <div class="meta">§ 02 / Execution</div>
+      <div>
+        <span class="eyebrow">Best Execution, by design</span>
+        <h2 style="margin-top:18px;max-width:20ch">Best execution is built into every order.</h2>
+        <p class="lead" style="margin-top:18px">Watershed Technologies has partnered with Wall Street Access to host the ATS using Watershed's proprietary order matching technology and routing algorithms. The ATS is a 15-millisecond broker-agnostic liquidity source; it solicits responses from a group of top-tier liquidity providers who are incented to compete for your order. Once an order is matched, the order is sent to an exchange to be crossed inside an exchange auction, creating another opportunity for price improvement.</p>
+      </div>
+    </div>
+
+    <div class="flow-wrap">
+      <div class="flow-head" data-reveal>
+        <div>
+          <span class="eyebrow">Order Lifecycle</span>
+          <h3 style="margin-top:14px">Five steps. Fifteen milliseconds.</h3>
+        </div>
+        <div class="legend" aria-hidden="true">
+          <span class="legend-key"><span class="sw"></span>Order path</span>
+          <span class="legend-key accent"><span class="sw"></span>Active stage</span>
+        </div>
+      </div>
+
+      <!-- Step cards -->
+      <div class="flow" id="flow" role="tablist" aria-label="Order lifecycle steps">
+        <div class="flow-track"      aria-hidden="true"></div>
+        <div class="flow-track-fill" id="trackFill"  aria-hidden="true"></div>
+        <div class="flow-packet"     id="flowPacket" aria-hidden="true"></div>
+
+        <button class="step is-active" data-step="0" data-reveal style="--reveal-delay:0ms"   role="tab" aria-selected="true"  type="button">
+          <div class="step-num"><span>01</span><span class="t">+0&thinsp;ms</span></div>
+          <h4>Order Submitted</h4>
+          <div class="step-tag">OMS / Algo</div>
+        </button>
+        <button class="step" data-step="1" data-reveal style="--reveal-delay:70ms"  role="tab" aria-selected="false" type="button">
+          <div class="step-num"><span>02</span><span class="t">+3&thinsp;ms</span></div>
+          <h4>Private Auction</h4>
+          <div class="step-tag">Sealed pool</div>
+        </button>
+        <button class="step" data-step="2" data-reveal style="--reveal-delay:140ms" role="tab" aria-selected="false" type="button">
+          <div class="step-num"><span>03</span><span class="t">+8&thinsp;ms</span></div>
+          <h4>LPs Respond</h4>
+          <div class="step-tag">Size &amp; vol</div>
+        </button>
+        <button class="step" data-step="3" data-reveal style="--reveal-delay:210ms" role="tab" aria-selected="false" type="button">
+          <div class="step-num"><span>04</span><span class="t">+12&thinsp;ms</span></div>
+          <h4>Exchange Cross</h4>
+          <div class="step-tag">National venue</div>
+        </button>
+        <button class="step" data-step="4" data-reveal style="--reveal-delay:280ms" role="tab" aria-selected="false" type="button">
+          <div class="step-num"><span>05</span><span class="t">+15&thinsp;ms</span></div>
+          <h4>Price Improvement</h4>
+          <div class="step-tag">Auction print</div>
+        </button>
+      </div>
+
+      <!-- Step detail panel -->
+      <div class="step-detail" id="stepDetail" data-reveal aria-live="polite">
+        <div class="sd-grid">
+
+          <!-- Copy column — 5 panes, one visible at a time -->
+          <div class="sd-copy">
+            <div class="sd-pane is-on" data-pane="0">
+              <span class="sd-tag">§ 01 · Intake</span>
+              <h3 class="sd-h">A parent order arrives <em>untouched</em>.</h3>
+              <p class="sd-body">The client controls every parameter — visibility scope, eligible LP set, minimum size, and routing path. No one on the Watershed desk sees the order. There <em>is</em> no Watershed desk.</p>
+              <div class="sd-specs">
+                <div class="s"><span class="lbl">Channel</span><span class="val">FIX 4.4 <small>/ OMS</small></span></div>
+                <div class="s"><span class="lbl">Disclosure</span><span class="val">0 <small>parties</small></span></div>
+                <div class="s"><span class="lbl">Latency</span><span class="val">+0 <small>ms</small></span></div>
+              </div>
+            </div>
+            <div class="sd-pane" data-pane="1">
+              <span class="sd-tag">§ 02 · Auction Open</span>
+              <h3 class="sd-h">A sealed auction with <em>vetted</em> liquidity providers.</h3>
+              <p class="sd-body">The order enters a private auction with a curated pool of LPs. Price is never disclosed; LPs respond on size and volatility. Each LP sees only what the client allows.</p>
+              <div class="sd-specs">
+                <div class="s"><span class="lbl">LP pool</span><span class="val">6 <small>top-tier</small></span></div>
+                <div class="s"><span class="lbl">Price visible</span><span class="val">No</span></div>
+                <div class="s"><span class="lbl">Window</span><span class="val">5 <small>ms</small></span></div>
+              </div>
+            </div>
+            <div class="sd-pane" data-pane="2">
+              <span class="sd-tag">§ 03 · LP Response</span>
+              <h3 class="sd-h">Liquidity providers compete on <em>size</em> and <em>vol</em>.</h3>
+              <p class="sd-body">LPs are selected for their ability to quote real size across the entire term structure — not for HFT speed or share-of-volume. Their responses are matched against the client's tolerance.</p>
+              <div class="sd-specs">
+                <div class="s"><span class="lbl">Quotes</span><span class="val">Live <small>(in pool)</small></span></div>
+                <div class="s"><span class="lbl">Match logic</span><span class="val">Best price + size</span></div>
+                <div class="s"><span class="lbl">Latency</span><span class="val">+8 <small>ms</small></span></div>
+              </div>
+            </div>
+            <div class="sd-pane" data-pane="3">
+              <span class="sd-tag">§ 04 · Exchange Cross</span>
+              <h3 class="sd-h">The matched order crosses on a <em>National Exchange</em>.</h3>
+              <p class="sd-body">A single cross ticket is sent to the listed market — fully reportable, fully compliant. No off-exchange settlement, no extra clearing arrangement. The print is yours, the venue is theirs.</p>
+              <div class="sd-specs">
+                <div class="s"><span class="lbl">Venue</span><span class="val">National <small>(SEC)</small></span></div>
+                <div class="s"><span class="lbl">Reporting</span><span class="val">CAT · MiFID II</span></div>
+                <div class="s"><span class="lbl">Latency</span><span class="val">+12 <small>ms</small></span></div>
+              </div>
+            </div>
+            <div class="sd-pane" data-pane="4">
+              <span class="sd-tag">§ 05 · Price Improvement</span>
+              <h3 class="sd-h">A final pass for <em>price improvement</em>.</h3>
+              <p class="sd-body">The cross is exposed inside the exchange's auction window. Other participants can step in and improve. If they do, the client wins. If they don't, the agreed cross prints. Either way: better than alone.</p>
+              <div class="sd-specs">
+                <div class="s"><span class="lbl">Auction</span><span class="val">Exposed <small>at venue</small></span></div>
+                <div class="s"><span class="lbl">Net saved</span><span class="val">~$0.005 <small>/ contract</small></span></div>
+                <div class="s"><span class="lbl">Total</span><span class="val">15 <small>ms</small></span></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Visualization column — per-step SVG diagrams -->
+          <div class="sd-vis">
+
+            <!-- Step 0: FIX order packet -->
+            <div class="sd-vis-pane is-on" data-vis="0">
+              <svg viewBox="0 0 360 240" fill="none" role="img" aria-label="FIX order message entering the ATS">
+                <g font-family="Geist Mono, ui-monospace, monospace" font-size="10" fill="oklch(0.52 0.015 230)" letter-spacing="1.2">
+                  <text x="20" y="30">FIX MSG 35=D · NEW ORDER</text>
+                </g>
+                <rect x="20" y="50" width="140" height="160" rx="6" stroke="oklch(0.18 0.02 230)" stroke-width="1.4" fill="oklch(0.985 0.004 220)"/>
+                <g font-family="Geist Mono, ui-monospace, monospace" font-size="10" fill="oklch(0.34 0.02 230)">
+                  <text x="32" y="74">SYM   XYZ</text>
+                  <text x="32" y="92">SIDE  BUY</text>
+                  <text x="32" y="110">QTY   100</text>
+                  <text x="32" y="128">EXP   MAY</text>
+                  <text x="32" y="146">STR   80 C</text>
+                  <text x="32" y="164">LMT   1.25</text>
+                  <text x="32" y="190" fill="oklch(0.74 0.14 210)">VIS   PRIVATE</text>
+                </g>
+                <defs>
+                  <marker id="arrowAccent0" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                    <path d="M0 0 L10 5 L0 10 z" fill="oklch(0.74 0.14 210)"/>
+                  </marker>
+                </defs>
+                <g stroke="oklch(0.74 0.14 210)" stroke-width="2" fill="none">
+                  <line x1="170" y1="130" x2="250" y2="130" marker-end="url(#arrowAccent0)"/>
+                </g>
+                <rect x="252" y="100" width="92" height="60" rx="6" fill="oklch(0.32 0.045 215)"/>
+                <text x="298" y="124" font-family="Newsreader, Times New Roman, Georgia, serif" font-style="italic" font-size="14" fill="oklch(0.985 0.004 220)" text-anchor="middle">Watershed</text>
+                <text x="298" y="144" font-family="Geist Mono, ui-monospace, monospace" font-size="9" fill="oklch(0.86 0.10 200)" text-anchor="middle" letter-spacing="2">ATS</text>
+              </svg>
+            </div>
+
+            <!-- Step 1: sealed auction with LP ring -->
+            <div class="sd-vis-pane" data-vis="1">
+              <svg viewBox="0 0 360 240" fill="none" role="img" aria-label="Private sealed auction with six liquidity providers">
+                <rect x="40" y="30" width="280" height="180" rx="10" stroke="oklch(0.32 0.045 215)" stroke-width="1.5" stroke-dasharray="6 4" fill="none"/>
+                <text x="180" y="22" font-family="Geist Mono, ui-monospace, monospace" font-size="10" fill="oklch(0.32 0.045 215)" text-anchor="middle" letter-spacing="2">SEALED · NO PRICE OUT</text>
+                <circle cx="180" cy="120" r="22" fill="oklch(0.18 0.02 230)"/>
+                <text x="180" y="124" font-family="Geist Mono, ui-monospace, monospace" font-size="10" fill="oklch(0.985 0.004 220)" text-anchor="middle" letter-spacing="1">ORDER</text>
+                <g font-family="Geist Mono, ui-monospace, monospace" font-size="9" fill="oklch(0.34 0.02 230)">
+                  <g><circle cx="80"  cy="70"  r="14" stroke="oklch(0.34 0.02 230)" stroke-width="1.2" fill="oklch(0.985 0.004 220)"/><text x="80"  y="73"  text-anchor="middle">LP1</text></g>
+                  <g><circle cx="180" cy="55"  r="14" stroke="oklch(0.34 0.02 230)" stroke-width="1.2" fill="oklch(0.985 0.004 220)"/><text x="180" y="58"  text-anchor="middle">LP2</text></g>
+                  <g><circle cx="280" cy="70"  r="14" stroke="oklch(0.34 0.02 230)" stroke-width="1.2" fill="oklch(0.985 0.004 220)"/><text x="280" y="73"  text-anchor="middle">LP3</text></g>
+                  <g><circle cx="80"  cy="170" r="14" stroke="oklch(0.34 0.02 230)" stroke-width="1.2" fill="oklch(0.985 0.004 220)"/><text x="80"  y="173" text-anchor="middle">LP4</text></g>
+                  <g><circle cx="180" cy="185" r="14" stroke="oklch(0.34 0.02 230)" stroke-width="1.2" fill="oklch(0.985 0.004 220)"/><text x="180" y="188" text-anchor="middle">LP5</text></g>
+                  <g><circle cx="280" cy="170" r="14" stroke="oklch(0.34 0.02 230)" stroke-width="1.2" fill="oklch(0.985 0.004 220)"/><text x="280" y="173" text-anchor="middle">LP6</text></g>
+                </g>
+                <circle cx="180" cy="120" r="40" stroke="oklch(0.74 0.14 210)" stroke-width="1" fill="none" opacity="0.6">
+                  <animate attributeName="r"       from="22" to="80" dur="2.4s" repeatCount="indefinite"/>
+                  <animate attributeName="opacity"  from="0.6" to="0" dur="2.4s" repeatCount="indefinite"/>
+                </circle>
+              </svg>
+            </div>
+
+            <!-- Step 2: LP response bar chart -->
+            <div class="sd-vis-pane" data-vis="2">
+              <svg viewBox="0 0 360 240" fill="none" role="img" aria-label="LP responses chart showing best match at LP3">
+                <text x="20" y="22" font-family="Geist Mono, ui-monospace, monospace" font-size="10" fill="oklch(0.52 0.015 230)" letter-spacing="2">LP RESPONSES · MID 1.22</text>
+                <g stroke="oklch(0.88 0.01 220)" stroke-width="1">
+                  <line x1="40" y1="60"  x2="340" y2="60"/>
+                  <line x1="40" y1="110" x2="340" y2="110"/>
+                  <line x1="40" y1="160" x2="340" y2="160"/>
+                  <line x1="40" y1="200" x2="340" y2="200"/>
+                </g>
+                <g font-family="Geist Mono, ui-monospace, monospace" font-size="9" fill="oklch(0.52 0.015 230)">
+                  <text x="34" y="64"  text-anchor="end">1.30</text>
+                  <text x="34" y="114" text-anchor="end">1.25</text>
+                  <text x="34" y="164" text-anchor="end">1.20</text>
+                  <text x="34" y="204" text-anchor="end">1.15</text>
+                </g>
+                <rect x="60"  y="118" width="36" height="82"  fill="oklch(0.32 0.045 215)" opacity="0.85"/>
+                <rect x="110" y="100" width="36" height="100" fill="oklch(0.32 0.045 215)" opacity="0.85"/>
+                <rect x="160" y="92"  width="36" height="108" fill="oklch(0.74 0.14 210)"/>
+                <rect x="210" y="124" width="36" height="76"  fill="oklch(0.32 0.045 215)" opacity="0.85"/>
+                <rect x="260" y="140" width="36" height="60"  fill="oklch(0.32 0.045 215)" opacity="0.85"/>
+                <circle cx="178" cy="92" r="5" fill="oklch(0.74 0.14 210)"/>
+                <circle cx="178" cy="92" r="11" stroke="oklch(0.74 0.14 210)" stroke-width="1.4" fill="none">
+                  <animate attributeName="r"       from="6"  to="22" dur="1.8s" repeatCount="indefinite"/>
+                  <animate attributeName="opacity"  from="0.9" to="0" dur="1.8s" repeatCount="indefinite"/>
+                </circle>
+                <text x="200" y="86" font-family="Geist Mono, ui-monospace, monospace" font-size="10" fill="oklch(0.18 0.02 230)" letter-spacing="1">MATCH @ 1.225 ×100</text>
+                <g font-family="Geist Mono, ui-monospace, monospace" font-size="9" fill="oklch(0.52 0.015 230)" text-anchor="middle">
+                  <text x="78"  y="218">LP1</text>
+                  <text x="128" y="218">LP2</text>
+                  <text x="178" y="218">LP3</text>
+                  <text x="228" y="218">LP4</text>
+                  <text x="278" y="218">LP5</text>
+                </g>
+              </svg>
+            </div>
+
+            <!-- Step 3: cross ticket to exchange -->
+            <div class="sd-vis-pane" data-vis="3">
+              <svg viewBox="0 0 360 240" fill="none" role="img" aria-label="Cross ticket sent from ATS to National Exchange">
+                <rect x="20"  y="90"  width="100" height="60" rx="6" fill="oklch(0.32 0.045 215)"/>
+                <text x="70"  y="116" font-family="Newsreader, Times New Roman, Georgia, serif" font-style="italic" font-size="14" fill="oklch(0.985 0.004 220)" text-anchor="middle">ATS</text>
+                <text x="70"  y="134" font-family="Geist Mono, ui-monospace, monospace" font-size="9" fill="oklch(0.86 0.10 200)" text-anchor="middle" letter-spacing="2">MATCHED</text>
+                <rect x="148" y="92"  width="80"  height="56" rx="4" stroke="oklch(0.18 0.02 230)" stroke-width="1.4" fill="oklch(0.985 0.004 220)"/>
+                <path d="M148 92 L 188 124 L 228 92" stroke="oklch(0.18 0.02 230)" stroke-width="1.2" fill="none"/>
+                <text x="188" y="166" font-family="Geist Mono, ui-monospace, monospace" font-size="9" fill="oklch(0.34 0.02 230)" text-anchor="middle" letter-spacing="2">CROSS TICKET</text>
+                <rect x="252" y="80"  width="92"  height="80" rx="6" stroke="oklch(0.18 0.02 230)" stroke-width="1.4" fill="oklch(0.965 0.006 220)"/>
+                <text x="298" y="108" font-family="Newsreader, Times New Roman, Georgia, serif" font-size="14" fill="oklch(0.18 0.02 230)" text-anchor="middle">Exchange</text>
+                <text x="298" y="126" font-family="Geist Mono, ui-monospace, monospace" font-size="9" fill="oklch(0.52 0.015 230)" text-anchor="middle" letter-spacing="2">NATIONAL</text>
+                <text x="298" y="142" font-family="Geist Mono, ui-monospace, monospace" font-size="9" fill="oklch(0.52 0.015 230)" text-anchor="middle" letter-spacing="2">VENUE</text>
+                <defs>
+                  <marker id="arrowAccent" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                    <path d="M0 0 L10 5 L0 10 z" fill="oklch(0.74 0.14 210)"/>
+                  </marker>
+                </defs>
+                <g stroke="oklch(0.74 0.14 210)" stroke-width="2" fill="none">
+                  <line x1="120" y1="120" x2="146" y2="120" marker-end="url(#arrowAccent)"/>
+                  <line x1="228" y1="120" x2="250" y2="120" marker-end="url(#arrowAccent)"/>
+                </g>
+                <g font-family="Geist Mono, ui-monospace, monospace" font-size="9" fill="oklch(0.34 0.02 230)" letter-spacing="1.4">
+                  <text x="180" y="42" text-anchor="middle">CAT · MiFID II · REG NMS</text>
+                </g>
+                <line x1="60" y1="56" x2="320" y2="56" stroke="oklch(0.88 0.01 220)" stroke-dasharray="3 3"/>
+              </svg>
+            </div>
+
+            <!-- Step 4: price improvement chart -->
+            <div class="sd-vis-pane" data-vis="4">
+              <svg viewBox="0 0 360 240" fill="none" role="img" aria-label="Price improvement inside exchange auction window">
+                <text x="20" y="22" font-family="Geist Mono, ui-monospace, monospace" font-size="10" fill="oklch(0.52 0.015 230)" letter-spacing="2">EXCHANGE AUCTION · 100 ms</text>
+                <line x1="40" y1="180" x2="340" y2="180" stroke="oklch(0.88 0.01 220)" stroke-width="1"/>
+                <line x1="40" y1="120" x2="340" y2="120" stroke="oklch(0.34 0.02 230)" stroke-width="1" stroke-dasharray="3 3"/>
+                <text x="48" y="114" font-family="Geist Mono, ui-monospace, monospace" font-size="9" fill="oklch(0.34 0.02 230)" letter-spacing="1">CROSS @ 1.225</text>
+                <line x1="40" y1="92"  x2="340" y2="92"  stroke="oklch(0.74 0.14 210)" stroke-width="1.4"/>
+                <text x="48" y="86"  font-family="Geist Mono, ui-monospace, monospace" font-size="9" fill="oklch(0.18 0.02 230)" letter-spacing="1">FILL @ 1.218 ✓</text>
+                <path d="M60 160 Q 130 160 160 132 T 240 100 T 320 92" stroke="oklch(0.32 0.045 215)" stroke-width="2" fill="none"/>
+                <circle cx="320" cy="92" r="5" fill="oklch(0.74 0.14 210)">
+                  <animate attributeName="r"       from="3"  to="9"   dur="1.6s" repeatCount="indefinite"/>
+                  <animate attributeName="opacity"  from="1"  to="0.3" dur="1.6s" repeatCount="indefinite"/>
+                </circle>
+                <line x1="320" y1="92" x2="320" y2="120" stroke="oklch(0.74 0.14 210)" stroke-width="1"/>
+                <text x="328" y="110" font-family="Geist Mono, ui-monospace, monospace" font-size="10" fill="oklch(0.18 0.02 230)">+0.7¢</text>
+                <g font-family="Geist Mono, ui-monospace, monospace" font-size="9" fill="oklch(0.52 0.015 230)" text-anchor="middle">
+                  <text x="60"  y="200">T0</text>
+                  <text x="180" y="200">T+50</text>
+                  <text x="320" y="200">T+100</text>
+                </g>
+              </svg>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <div class="flow-controls">
+        <button class="ctrl-btn is-on" id="playBtn"  type="button">▶ Play sequence</button>
+        <button class="ctrl-btn"       id="resetBtn" type="button">↺ Reset</button>
+        <span class="flow-time">
+          <span>Elapsed</span>
+          <span class="num" id="elapsed">00&thinsp;ms</span>
+        </span>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     STATS STRIP
+     ============================================================ -->
+<section style="padding-top:0">
+  <div class="container">
+    <div class="stats">
+      <div class="stat" data-reveal>
+        <span class="label">Latency · End-to-end</span>
+        <div class="big">15<span class="unit">ms</span></div>
+        <div class="desc">Full execution speed from order submission to exchange cross.</div>
+      </div>
+      <div class="stat" data-reveal>
+        <span class="label">Information Disclosure</span>
+        <div class="big">0<span class="unit">/ price</span></div>
+        <div class="desc">Price is only revealed if a match takes place. Nothing leaks otherwise.</div>
+      </div>
+      <div class="stat" data-reveal>
+        <span class="label">Integration</span>
+        <div class="big">∞<span class="unit">OMS / algo</span></div>
+        <div class="desc">Complements almost any OMS and algo suite already in production.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     § 03 — COMPARISON: ATS vs IDB
+     ============================================================ -->
+<section style="padding-top:clamp(48px,5vw,96px)">
+  <div class="container">
+    <div class="section-head" data-reveal>
+      <div class="meta">§ 03 / Topology</div>
+      <div>
+        <span class="eyebrow">ATS vs. Inter-Dealer Brokers</span>
+        <h2 style="margin-top:18px;max-width:18ch">Fewer hops. No phones. Cleaner prints.</h2>
+      </div>
+    </div>
+
+    <div class="compare">
+      <div class="left" data-reveal>
+        <h4 class="tag">A · Inter-Dealer Broker model</h4>
+        <h3>Many hands, many calls.</h3>
+        <p style="margin-top:10px;color:var(--ink-2);font-size:14.5px">Order travels through executing brokers and IDB callers, exposing intent at every hop before reaching the exchange.</p>
+        <!-- IDB topology diagram — font corrected to Geist Mono -->
+        <svg class="topo" viewBox="0 0 480 240" fill="none" aria-label="Inter-dealer broker routing topology showing many intermediaries" role="img">
+          <g>
+            <rect x="20" y="20" width="80" height="36" rx="4" stroke="var(--ink)"   stroke-width="1.4"/>
+            <text x="60" y="42" font-family="Geist Mono, ui-monospace, monospace" font-size="11" fill="var(--ink)" text-anchor="middle">BANK</text>
+          </g>
+          <g>
+            <rect x="160" y="10"  width="76" height="28" rx="4" stroke="var(--ink-3)" stroke-width="1.2"/>
+            <text x="198" y="28"  font-family="Geist Mono, ui-monospace, monospace" font-size="10" fill="var(--ink-2)" text-anchor="middle">IDB · 1</text>
+            <rect x="160" y="50"  width="76" height="28" rx="4" stroke="var(--ink-3)" stroke-width="1.2"/>
+            <text x="198" y="68"  font-family="Geist Mono, ui-monospace, monospace" font-size="10" fill="var(--ink-2)" text-anchor="middle">IDB · 2</text>
+            <rect x="160" y="90"  width="76" height="28" rx="4" stroke="var(--ink-3)" stroke-width="1.2"/>
+            <text x="198" y="108" font-family="Geist Mono, ui-monospace, monospace" font-size="10" fill="var(--ink-2)" text-anchor="middle">IDB · 3</text>
+          </g>
+          <g>
+            <rect x="280" y="20"  width="100" height="28" rx="4" stroke="var(--ink-3)" stroke-width="1.2"/>
+            <text x="330" y="38"  font-family="Geist Mono, ui-monospace, monospace" font-size="10" fill="var(--ink-2)" text-anchor="middle">EXEC BROKER A</text>
+            <rect x="280" y="60"  width="100" height="28" rx="4" stroke="var(--ink-3)" stroke-width="1.2"/>
+            <text x="330" y="78"  font-family="Geist Mono, ui-monospace, monospace" font-size="10" fill="var(--ink-2)" text-anchor="middle">EXEC BROKER B</text>
+            <rect x="280" y="100" width="100" height="28" rx="4" stroke="var(--ink-3)" stroke-width="1.2"/>
+            <text x="330" y="118" font-family="Geist Mono, ui-monospace, monospace" font-size="10" fill="var(--ink-2)" text-anchor="middle">EXEC BROKER C</text>
+          </g>
+          <g>
+            <rect x="400" y="180" width="68" height="36" rx="4" stroke="var(--ink)" stroke-width="1.4"/>
+            <text x="434" y="202" font-family="Geist Mono, ui-monospace, monospace" font-size="11" fill="var(--ink)" text-anchor="middle">EXCH</text>
+          </g>
+          <g stroke="var(--ink-3)" stroke-width="1" fill="none" stroke-dasharray="3 3">
+            <path d="M100 38 Q 130 24 160 24"/>
+            <path d="M100 38 Q 130 50 160 64"/>
+            <path d="M100 38 Q 130 80 160 104"/>
+            <path d="M236 24 Q 260 24 280 34"/>
+            <path d="M236 24 Q 260 60 280 74"/>
+            <path d="M236 64 Q 260 60 280 34"/>
+            <path d="M236 64 Q 260 90 280 114"/>
+            <path d="M236 104 Q 260 100 280 74"/>
+            <path d="M236 104 Q 260 110 280 114"/>
+            <path d="M380 34  Q 410 100 410 180"/>
+            <path d="M380 74  Q 420 120 420 180"/>
+            <path d="M380 114 Q 430 140 432 180"/>
+          </g>
+        </svg>
+        <div style="font-family:var(--mono);font-size:11px;color:var(--ink-3);text-transform:uppercase;letter-spacing:.12em;margin-top:18px">~ 9 disclosures · variable latency</div>
+      </div>
+
+      <div class="right" data-reveal>
+        <h4 class="tag" style="color:var(--accent)">B · Watershed ATS</h4>
+        <h3>One private auction. One cross.</h3>
+        <p style="margin-top:10px;color:var(--ink-2);font-size:14.5px">Order routes once, into a sealed auction. A single cross ticket reaches the exchange — with a final chance for price improvement.</p>
+        <!-- ATS topology diagram — font corrected to Geist Mono / Newsreader -->
+        <svg class="topo" viewBox="0 0 480 240" fill="none" aria-label="Watershed ATS routing topology — direct single-hop execution" role="img">
+          <g>
+            <rect x="20" y="100" width="100" height="40" rx="4" stroke="var(--ink)" stroke-width="1.4"/>
+            <text x="70" y="118" font-family="Geist Mono, ui-monospace, monospace" font-size="10" fill="var(--ink)" text-anchor="middle">ORDER</text>
+            <text x="70" y="132" font-family="Geist Mono, ui-monospace, monospace" font-size="10" fill="var(--ink)" text-anchor="middle">SENDER</text>
+          </g>
+          <g>
+            <rect x="180" y="60" width="120" height="120" rx="6" stroke="var(--accent)" stroke-width="1.6" fill="color-mix(in oklab, var(--accent) 6%, transparent)"/>
+            <text x="240" y="86"  font-family="Newsreader, Times New Roman, Georgia, serif" font-size="14" fill="var(--ink)" text-anchor="middle" font-weight="500">ATS</text>
+            <text x="240" y="104" font-family="Geist Mono, ui-monospace, monospace" font-size="9"  fill="var(--ink-3)" text-anchor="middle">PRIVATE AUCTION</text>
+            <circle cx="210" cy="130" r="4" fill="var(--ink)"/>
+            <circle cx="240" cy="130" r="4" fill="var(--ink)"/>
+            <circle cx="270" cy="130" r="4" fill="var(--ink)"/>
+            <circle cx="210" cy="150" r="4" fill="var(--ink)"/>
+            <circle cx="240" cy="150" r="4" fill="var(--ink)"/>
+            <circle cx="270" cy="150" r="4" fill="var(--ink)"/>
+            <text x="240" y="172" font-family="Geist Mono, ui-monospace, monospace" font-size="9" fill="var(--ink-3)" text-anchor="middle">6 LIQUIDITY PROVIDERS</text>
+          </g>
+          <g>
+            <rect x="360" y="100" width="100" height="40" rx="4" stroke="var(--ink)" stroke-width="1.4"/>
+            <text x="410" y="118" font-family="Geist Mono, ui-monospace, monospace" font-size="10" fill="var(--ink)" text-anchor="middle">NATIONAL</text>
+            <text x="410" y="132" font-family="Geist Mono, ui-monospace, monospace" font-size="10" fill="var(--ink)" text-anchor="middle">EXCHANGE</text>
+          </g>
+          <g stroke="var(--accent)" stroke-width="2" fill="none">
+            <path d="M120 120 L 180 120"/>
+            <path d="M174 114 L 180 120 L 174 126"/>
+            <path d="M300 120 L 360 120"/>
+            <path d="M354 114 L 360 120 L 354 126"/>
+          </g>
+          <text x="330" y="94"  font-family="Geist Mono, ui-monospace, monospace" font-size="9" fill="var(--ink-3)" text-anchor="middle" letter-spacing="1.4">CROSS TICKET</text>
+          <line x1="330" y1="100" x2="330" y2="114" stroke="var(--rule)" stroke-width="1" stroke-dasharray="2 2"/>
+        </svg>
+        <div style="font-family:var(--mono);font-size:11px;color:var(--accent);text-transform:uppercase;letter-spacing:.12em;margin-top:18px">1 disclosure · 15&thinsp;ms deterministic</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     § 04 — AUDIENCE / PARTICIPANTS
+     ============================================================ -->
+<section style="background:var(--bg-alt)">
+  <div class="container">
+    <div class="section-head" data-reveal>
+      <div class="meta">§ 04 / Participants</div>
+      <div>
+        <span class="eyebrow">Order Senders &amp; Liquidity Providers</span>
+        <h2 style="margin-top:18px;max-width:20ch">A broker-neutral pool of serious volatility traders.</h2>
+      </div>
+    </div>
+
+    <div class="audience">
+      <div data-reveal>
+        <span class="eyebrow">Order Senders</span>
+        <p class="lead" style="margin-top:18px">Watershed's Order Senders are a mix of option market participants — banks, hedge funds, asset managers, interdealer brokers, outsourced trading desks, and other institutional users of the option markets. They vary in size and activity but share one common desire: a true broker-neutral solution, completely protected from the preferential order-routing practices that have become widespread in the marketplace.</p>
+
+        <span class="eyebrow" style="margin-top:36px;display:inline-flex">Liquidity Providers</span>
+        <p class="lead" style="margin-top:18px">Proprietary trading firms and hedge funds, selected for their individual reputations as bona fide volatility traders — not focused on high-frequency trading, nor capturing profits through sheer size or market-share dominance.</p>
+
+        <span class="eyebrow" style="margin-top:36px;display:inline-flex">Surveillance</span>
+        <p class="lead" style="margin-top:18px">Watershed utilizes a third-party monitoring system for all orders to ensure that no participants are moving markets or engaging in any suspicious activity.</p>
+      </div>
+
+      <div>
+        <div style="font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3);margin-bottom:18px">Participant Mix</div>
+        <div class="audience-list">
+          <div class="item"><span class="num">01</span>Banks</div>
+          <div class="item"><span class="num">02</span>Hedge Funds</div>
+          <div class="item"><span class="num">03</span>Asset Managers</div>
+          <div class="item"><span class="num">04</span>Interdealer Brokers</div>
+          <div class="item"><span class="num">05</span>Outsourced Trading Desks</div>
+          <div class="item"><span class="num">06</span>Prop Vol Traders</div>
+        </div>
+
+        <div style="margin-top:32px;border:1px solid var(--rule);border-radius:14px;padding:24px;background:var(--surface)">
+          <div style="font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3)">Hosted with</div>
+          <div style="font-family:var(--display);font-size:20px;font-weight:500;letter-spacing:-0.015em;margin-top:8px">Wall Street Access</div>
+          <div style="font-size:13.5px;color:var(--ink-2);margin-top:6px">ATS hosted by Wall Street Access. Routing &amp; matching technology proprietary to Watershed.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     CTA — CONNECT
+     ============================================================ -->
+<section id="connect">
+  <div class="container">
+    <div class="cta">
+      <div class="cta-inner" data-reveal>
+        <div>
+          <span class="eyebrow">Connect with Watershed</span>
+          <h2 style="margin-top:18px">Exposing your flow to liquidity adds power to returns.</h2>
+        </div>
+        <div class="cta-card">
+          <span class="label">Direct Inquiry</span>
+          <a class="email" href="mailto:info@watershedtech.us">
+            info@watershedtech.us
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+              <path d="M3 11L11 3M11 3H5M11 3v6" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </a>
+          <a class="cta-btn" href="mailto:info@watershedtech.us">
+            Schedule onboarding
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+              <path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

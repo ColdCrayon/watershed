@@ -1,0 +1,12 @@
+{
+  "name": "watershed-ats",
+  "version": "1.0.0",
+  "description": "Watershed Technologies — static marketing site",
+  "scripts": {
+    "dev": "eleventy --serve",
+    "build": "eleventy"
+  },
+  "devDependencies": {
+    "@11ty/eleventy": "^3.0.0"
+  }
+}

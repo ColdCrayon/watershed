@@ -1,0 +1,36 @@
+/* =============================================================
+   WATERSHED TECHNOLOGIES — Design Tokens
+   All primitive values live here. Never write raw hex or px
+   color values in main.css — reference a token instead.
+   ============================================================= */
+
+:root {
+  /* ---- Color: backgrounds ---- */
+  --bg:        oklch(0.985 0.004 220);   /* near-white, cool */
+  --bg-alt:    oklch(0.965 0.006 220);   /* faint off-white for alternating sections */
+  --surface:   #ffffff;
+
+  /* ---- Color: ink (text) ---- */
+  --ink:       oklch(0.18 0.02 230);     /* near-black */
+  --ink-2:     oklch(0.34 0.02 230);     /* body text */
+  --ink-3:     oklch(0.52 0.015 230);    /* labels, captions, placeholders */
+
+  /* ---- Color: rules / borders ---- */
+  --rule:      oklch(0.88 0.01 220);     /* standard separator */
+  --rule-2:    oklch(0.93 0.008 220);    /* subtle inner rule */
+
+  /* ---- Color: brand ---- */
+  --primary:   oklch(0.32 0.045 215);    /* deep slate-teal */
+  --primary-2: oklch(0.22 0.04 220);     /* darker primary for hover states */
+  --accent:    oklch(0.74 0.14 210);     /* electric cyan */
+  --accent-2:  oklch(0.86 0.10 200);     /* lighter cyan for glow effects */
+
+  /* ---- Layout ---- */
+  --maxw:   1400px;
+  --gutter: clamp(20px, 4vw, 56px);
+
+  /* ---- Typography ---- */
+  --mono:    "Geist Mono", ui-monospace, monospace;
+  --display: "Newsreader", "Times New Roman", Georgia, serif;
+  --body:    "Geist", system-ui, sans-serif;
+}
