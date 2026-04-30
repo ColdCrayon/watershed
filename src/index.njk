@@ -568,37 +568,38 @@ description: "Watershed Technologies operates a 15ms broker-neutral options ATS 
         <h3>One private auction. One cross.</h3>
         <p style="margin-top:10px;color:var(--ink-2);font-size:14.5px">Order routes once, into a sealed auction. A single cross ticket reaches the exchange — with a final chance for price improvement.</p>
         <!-- ATS topology diagram — font corrected to Geist Mono / Newsreader -->
-        <svg class="topo" viewBox="0 0 480 240" fill="none" aria-label="Watershed ATS routing topology — direct single-hop execution" role="img">
+        <svg class="topo" viewBox="0 0 560 240" fill="none" aria-label="Watershed ATS routing topology — direct single-hop execution" role="img">
+          <defs>
+            <marker id="arrowTopo" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+              <path d="M0 0 L10 5 L0 10 z" fill="oklch(0.74 0.14 210)"/>
+            </marker>
+          </defs>
           <g>
             <rect x="20" y="100" width="100" height="40" rx="4" stroke="var(--ink)" stroke-width="1.4"/>
             <text x="70" y="118" font-family="Geist Mono, ui-monospace, monospace" font-size="10" fill="var(--ink)" text-anchor="middle">ORDER</text>
             <text x="70" y="132" font-family="Geist Mono, ui-monospace, monospace" font-size="10" fill="var(--ink)" text-anchor="middle">SENDER</text>
           </g>
           <g>
-            <rect x="180" y="60" width="120" height="120" rx="6" stroke="var(--accent)" stroke-width="1.6" fill="color-mix(in oklab, var(--accent) 6%, transparent)"/>
-            <text x="240" y="86"  font-family="Newsreader, Times New Roman, Georgia, serif" font-size="14" fill="var(--ink)" text-anchor="middle" font-weight="500">ATS</text>
-            <text x="240" y="104" font-family="Geist Mono, ui-monospace, monospace" font-size="9"  fill="var(--ink-3)" text-anchor="middle">PRIVATE AUCTION</text>
-            <circle cx="210" cy="130" r="4" fill="var(--ink)"/>
+            <rect x="210" y="60" width="120" height="120" rx="6" stroke="var(--accent)" stroke-width="1.6" fill="color-mix(in oklab, var(--accent) 6%, transparent)"/>
+            <text x="270" y="86"  font-family="Newsreader, Times New Roman, Georgia, serif" font-size="14" fill="var(--ink)" text-anchor="middle" font-weight="500">ATS</text>
+            <text x="270" y="104" font-family="Geist Mono, ui-monospace, monospace" font-size="9"  fill="var(--ink-3)" text-anchor="middle">PRIVATE AUCTION</text>
             <circle cx="240" cy="130" r="4" fill="var(--ink)"/>
             <circle cx="270" cy="130" r="4" fill="var(--ink)"/>
-            <circle cx="210" cy="150" r="4" fill="var(--ink)"/>
+            <circle cx="300" cy="130" r="4" fill="var(--ink)"/>
             <circle cx="240" cy="150" r="4" fill="var(--ink)"/>
             <circle cx="270" cy="150" r="4" fill="var(--ink)"/>
-            <text x="240" y="172" font-family="Geist Mono, ui-monospace, monospace" font-size="9" fill="var(--ink-3)" text-anchor="middle">6 LIQUIDITY PROVIDERS</text>
+            <circle cx="300" cy="150" r="4" fill="var(--ink)"/>
+            <text x="270" y="172" font-family="Geist Mono, ui-monospace, monospace" font-size="9" fill="var(--ink-3)" text-anchor="middle">6 LIQUIDITY PROVIDERS</text>
           </g>
           <g>
-            <rect x="360" y="100" width="100" height="40" rx="4" stroke="var(--ink)" stroke-width="1.4"/>
-            <text x="410" y="118" font-family="Geist Mono, ui-monospace, monospace" font-size="10" fill="var(--ink)" text-anchor="middle">NATIONAL</text>
-            <text x="410" y="132" font-family="Geist Mono, ui-monospace, monospace" font-size="10" fill="var(--ink)" text-anchor="middle">EXCHANGE</text>
+            <rect x="440" y="100" width="100" height="40" rx="4" stroke="var(--ink)" stroke-width="1.4"/>
+            <text x="490" y="118" font-family="Geist Mono, ui-monospace, monospace" font-size="10" fill="var(--ink)" text-anchor="middle">NATIONAL</text>
+            <text x="490" y="132" font-family="Geist Mono, ui-monospace, monospace" font-size="10" fill="var(--ink)" text-anchor="middle">EXCHANGE</text>
           </g>
-          <g stroke="var(--accent)" stroke-width="2" fill="none">
-            <path d="M120 120 L 180 120"/>
-            <path d="M174 114 L 180 120 L 174 126"/>
-            <path d="M300 120 L 360 120"/>
-            <path d="M354 114 L 360 120 L 354 126"/>
-          </g>
-          <text x="330" y="94"  font-family="Geist Mono, ui-monospace, monospace" font-size="9" fill="var(--ink-3)" text-anchor="middle" letter-spacing="1.4">CROSS TICKET</text>
-          <line x1="330" y1="100" x2="330" y2="114" stroke="var(--rule)" stroke-width="1" stroke-dasharray="2 2"/>
+          <line x1="120" y1="120" x2="208" y2="120" stroke="var(--accent)" stroke-width="2" marker-end="url(#arrowTopo)"/>
+          <line x1="330" y1="120" x2="438" y2="120" stroke="var(--accent)" stroke-width="2" stroke-dasharray="6 3" marker-end="url(#arrowTopo)"/>
+          <text x="384" y="94" font-family="Geist Mono, ui-monospace, monospace" font-size="9" fill="var(--ink-3)" text-anchor="middle" letter-spacing="1.4">CROSS TICKET</text>
+          <line x1="384" y1="100" x2="384" y2="114" stroke="var(--rule)" stroke-width="1" stroke-dasharray="2 2"/>
         </svg>
         <div style="font-family:var(--mono);font-size:11px;color:var(--accent);text-transform:uppercase;letter-spacing:.12em;margin-top:18px">1 disclosure · 15&thinsp;ms deterministic</div>
       </div>
