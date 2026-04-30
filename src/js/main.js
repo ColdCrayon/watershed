@@ -357,11 +357,12 @@
   function validate(data) {
     clearErrors();
     let ok = true;
-    if (!data.name.trim())                          { fieldError('f-name',  'Required');              ok = false; }
-    if (!data.firm.trim())                          { fieldError('f-firm',  'Required');              ok = false; }
-    if (!data.title.trim())                         { fieldError('f-title', 'Required');              ok = false; }
-    if (!data.email.trim())                         { fieldError('f-email', 'Required');              ok = false; }
-    else if (!EMAIL_RE.test(data.email.trim()))     { fieldError('f-email', 'Enter a valid email');   ok = false; }
+    if (!data.name.trim())                      { fieldError('f-name',  'Required');            ok = false; }
+    if (!data.firm.trim())                      { fieldError('f-firm',  'Required');            ok = false; }
+    if (!data.title.trim())                     { fieldError('f-title', 'Required');            ok = false; }
+    if (!data.email.trim())                     { fieldError('f-email', 'Required');            ok = false; }
+    else if (!EMAIL_RE.test(data.email.trim())) { fieldError('f-email', 'Enter a valid email'); ok = false; }
+    if (!data.type)                             { fieldError('f-type',  'Required');            ok = false; }
     return ok;
   }
 
@@ -374,32 +375,24 @@
     });
   });
 
-  // Submit — validate, then build mailto and show success state
+  // Submit — validate, guard against re-submission, build mailto, show success state
   form.addEventListener('submit', e => {
     e.preventDefault();
     if (submitting) return;
 
     const data = Object.fromEntries(new FormData(form));
 
-    // Participant type is required — show a native validation message if missing
-    if (!data.type) {
-      const typeEl = document.getElementById('f-type');
-      if (typeEl) { typeEl.focus(); typeEl.reportValidity(); }
-      return;
-    }
-
-    // Lock out further submissions and disable the button for visual feedback
-    submitting = true;
-    const submitBtn = form.querySelector('[type="submit"]');
-    if (submitBtn) submitBtn.disabled = true;
-
-    const cfg  = MODES[mode] || MODES.contact;
     if (!validate(data)) {
       form.querySelector('[aria-invalid]').focus();
       return;
     }
 
-    const cfg  = MODES[mode] || MODES.contact;
+    // All valid — lock out re-submission and disable button
+    submitting = true;
+    const submitBtn = form.querySelector('[type="submit"]');
+    if (submitBtn) submitBtn.disabled = true;
+
+    const cfg     = MODES[mode] || MODES.contact;
     const subject = encodeURIComponent(`${cfg.subject} — ${data.firm.trim()}`);
     const bodyText = [
       `Name:              ${data.name.trim()}`,
