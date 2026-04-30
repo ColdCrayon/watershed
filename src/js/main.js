@@ -310,12 +310,16 @@
     if (e.key === 'Escape' && !backdrop.hidden) closeModal();
   });
 
-  // Focus trap
+  // Focus trap — only consider elements not inside a hidden ancestor
+  function visibleFocusable() {
+    return Array.from(backdrop.querySelectorAll(
+      'button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])'
+    )).filter(el => el.closest('[hidden]') === null);
+  }
+
   backdrop.addEventListener('keydown', e => {
     if (e.key !== 'Tab') return;
-    const els = Array.from(backdrop.querySelectorAll(
-      'button:not([disabled]), [href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])'
-    ));
+    const els   = visibleFocusable();
     const first = els[0];
     const last  = els[els.length - 1];
     if (e.shiftKey) {
@@ -325,22 +329,65 @@
     }
   });
 
-  // Submit — build mailto and open; show success state
+  // Validation — check required fields before composing the mailto URL
+  const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+  function clearErrors() {
+    form.querySelectorAll('.field-error').forEach(el => el.remove());
+    form.querySelectorAll('[aria-invalid]').forEach(el => el.removeAttribute('aria-invalid'));
+  }
+
+  function fieldError(inputId, msg) {
+    const input = document.getElementById(inputId);
+    if (!input) return;
+    input.setAttribute('aria-invalid', 'true');
+    const span = document.createElement('span');
+    span.className = 'field-error';
+    span.setAttribute('role', 'alert');
+    span.textContent = msg;
+    input.parentNode.appendChild(span);
+  }
+
+  function validate(data) {
+    clearErrors();
+    let ok = true;
+    if (!data.name.trim())                          { fieldError('f-name',  'Required');              ok = false; }
+    if (!data.firm.trim())                          { fieldError('f-firm',  'Required');              ok = false; }
+    if (!data.title.trim())                         { fieldError('f-title', 'Required');              ok = false; }
+    if (!data.email.trim())                         { fieldError('f-email', 'Required');              ok = false; }
+    else if (!EMAIL_RE.test(data.email.trim()))     { fieldError('f-email', 'Enter a valid email');   ok = false; }
+    return ok;
+  }
+
+  // Clear a field's error as soon as the user starts correcting it
+  form.querySelectorAll('input, select, textarea').forEach(el => {
+    el.addEventListener('input', () => {
+      el.removeAttribute('aria-invalid');
+      const err = el.parentNode.querySelector('.field-error');
+      if (err) err.remove();
+    });
+  });
+
+  // Submit — validate, then build mailto and show success state
   form.addEventListener('submit', e => {
     e.preventDefault();
     const data = Object.fromEntries(new FormData(form));
-    const cfg  = MODES[mode] || MODES.contact;
+    if (!validate(data)) {
+      form.querySelector('[aria-invalid]').focus();
+      return;
+    }
 
-    const subject = encodeURIComponent(`${cfg.subject} — ${data.firm || 'Unknown Firm'}`);
+    const cfg  = MODES[mode] || MODES.contact;
+    const subject = encodeURIComponent(`${cfg.subject} — ${data.firm.trim()}`);
     const bodyText = [
-      `Name:              ${data.name  || '—'}`,
-      `Firm:              ${data.firm  || '—'}`,
-      `Title:             ${data.title || '—'}`,
-      `Email:             ${data.email || '—'}`,
-      `Phone:             ${data.phone || 'Not provided'}`,
+      `Name:              ${data.name.trim()}`,
+      `Firm:              ${data.firm.trim()}`,
+      `Title:             ${data.title.trim()}`,
+      `Email:             ${data.email.trim()}`,
+      `Phone:             ${data.phone.trim() || 'Not provided'}`,
       `Participant type:  ${data.type  || 'Not specified'}`,
       '',
-      data.message ? `Notes:\n${data.message}` : 'No additional notes.',
+      data.message.trim() ? `Notes:\n${data.message.trim()}` : 'No additional notes.',
     ].join('\n');
     const body = encodeURIComponent(bodyText);
 

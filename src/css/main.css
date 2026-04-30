@@ -1359,6 +1359,19 @@ footer {
   border-color: var(--primary);
   box-shadow: 0 0 0 3px color-mix(in oklab, var(--primary) 15%, transparent);
 }
+.form-field input[aria-invalid="true"],
+.form-field select[aria-invalid="true"],
+.form-field textarea[aria-invalid="true"] {
+  border-color: oklch(0.55 0.18 25);
+  box-shadow: 0 0 0 3px oklch(0.55 0.18 25 / 0.12);
+}
+.field-error {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: .06em;
+  color: oklch(0.50 0.18 25);
+  margin-top: 2px;
+}
 .form-field input::placeholder,
 .form-field textarea::placeholder { color: var(--ink-3); }
 .form-field textarea {
