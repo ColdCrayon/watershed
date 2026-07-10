@@ -1,9 +1,56 @@
----
-layout: base.njk
-title: "Watershed Technologies — Real Liquidity for the Options Markets"
-description: "Watershed Technologies operates a 15ms broker-neutral options ATS — discretionary, compliant, and connected to national exchanges."
----
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Watershed Technologies — Real Liquidity for the Options Markets</title>
+  <meta name="description" content="Watershed Technologies operates a 15ms broker-neutral options ATS — discretionary, compliant, and connected to national exchanges.">
 
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300..700;1,6..72,300..700&family=Geist:wght@300..700&family=Geist+Mono:wght@300..600&display=swap" rel="stylesheet">
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="css/main.css">
+</head>
+<body>
+
+  <header class="nav">
+  <div class="nav-inner">
+    <a href="#top" class="brand" aria-label="Watershed Technologies, Home">
+      <span><span class="w">W</span>atershed</span>
+      <small>Technologies</small>
+    </a>
+
+    <nav class="nav-links" id="nav-menu" aria-label="Primary">
+      <a href="#top"       class="active">Home</a>
+      <a href="#solutions">Solutions</a>
+      <a href="#connect">Connect</a>
+    </nav>
+
+    <button
+      class="nav-hamburger"
+      aria-label="Open navigation menu"
+      aria-expanded="false"
+      aria-controls="nav-menu"
+      type="button"
+    >
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+
+    <a href="mailto:info@watershedtech.us" class="nav-cta" data-modal="contact">
+      <span class="dot" aria-hidden="true"></span>
+      Contact
+    </a>
+  </div>
+</header>
+
+
+  <main id="top">
+    
 <!-- ============================================================
      HERO
      ============================================================ -->
@@ -768,3 +815,55 @@ description: "Watershed Technologies operates a 15ms broker-neutral options ATS 
     </div><!-- /.modal-body -->
   </div>
 </div>
+
+  </main>
+
+  <footer>
+  <div class="container">
+    <div class="foot">
+      <div class="col">
+        <div class="brand" style="margin-bottom:0">
+          <span><span class="w">W</span>atershed</span>
+          <small>Technologies</small>
+        </div>
+        <address class="addr" style="font-style:normal">
+          425 South Financial Place<br>
+          Suite 1822<br>
+          Chicago, Illinois 60605
+        </address>
+      </div>
+
+      <div class="col">
+        <h5>Site</h5>
+        <a href="#top">Home</a>
+        <a href="#solutions">Solutions</a>
+        <a href="#connect">Connect</a>
+      </div>
+
+      <div class="col">
+        <h5>Contact</h5>
+        <a href="mailto:info@watershedtech.us">info@watershedtech.us</a>
+        <a href="https://www.linkedin.com/company/watershed-tech/" target="_blank" rel="noopener noreferrer">LinkedIn ↗</a>
+      </div>
+
+      <div class="col">
+        <h5>Compliance</h5>
+        <p style="font-size:14px;color:var(--ink-2);line-height:1.6">
+          MiFID II reporting<br>
+          CAT compliant<br>
+          Hosted by Wall Street Access
+        </p>
+      </div>
+    </div>
+
+    <div class="foot-bot">
+      <span>© 2026 Watershed Technologies, LLC</span>
+      <span>Alternative Trading System · SEC-registered broker-dealer hosted</span>
+    </div>
+  </div>
+</footer>
+
+
+  <script src="js/main.js"></script>
+</body>
+</html>

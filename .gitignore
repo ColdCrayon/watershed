@@ -1,4 +1,5 @@
-node_modules/
-_site/
 .DS_Store
 .gstack/
+.claude/
+.agents/
+skills-lock.json
