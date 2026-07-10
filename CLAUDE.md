@@ -5,34 +5,25 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ## Commands
 
 ```bash
-npm run dev     # start dev server with live reload (Eleventy --serve)
-npm run build   # production build → _site/
+python3 -m http.server 8080   # local dev server; open http://localhost:8080/
 ```
 
-No linting or test tooling is configured.
+No build step, no dependencies, no linting or test tooling. Edit → refresh.
 
 ## Architecture
 
-Single-page static marketing site for Watershed Technologies (institutional options ATS). Built with Eleventy 3 + Nunjucks; output is plain HTML/CSS/JS in `_site/`.
+Single-page static marketing site for Watershed Technologies (institutional options ATS). Plain HTML/CSS/JS — three files, deploy-ready as-is.
 
-**Template hierarchy:**
-- `src/_includes/base.njk` — root HTML shell; loads fonts, `/css/main.css`, and `/js/main.js`; renders nav, `{{ content | safe }}`, footer
-- `src/_includes/nav.njk` / `footer.njk` — composed into every page via base.njk
-- `src/index.njk` — the entire page content; uses `layout: base.njk`
-
-**CSS split:**
-- `src/css/tokens.css` — all primitive values (oklch colors, spacing, font stacks). **Never write raw color or px values in main.css; always use a token.**
-- `src/css/main.css` — imports tokens.css, then all component styles in section order matching the page
-
-**JS (`src/js/main.js`):** Vanilla only, no dependencies. Six self-contained IIFEs:
-1. `[data-reveal]` scroll-reveal via IntersectionObserver (auto-staggers direct children of `.pillars`, `.stats`, `.compare`, `.audience`)
-2. `.reveal` variant for hero headline
-3. Hero parallax depth field (`#depth` SVG layers, `data-depth` attribute drives intensity)
-4. Magnetic button effect on `.btn` / `.cta-btn`
-5. Flow sequence player — 5-step lifecycle diagram with play/pause/reset, autoplay on viewport entry, crossfade between `.sd-pane` / `.sd-vis-pane` panels
-6. Active nav link tracking + mobile hamburger toggle
-
-**Eleventy config (`.eleventy.js`):** Passes through `src/css` and `src/js` verbatim; input `src/`, output `_site/`, templates `njk` + `html`.
+- `index.html` — the entire page (nav, all sections, footer inlined). Loads Google Fonts, `css/main.css`, `js/main.js`.
+- `css/tokens.css` — primitive values (oklch colors, spacing, font stacks). **Never write raw color or px values in main.css; always use a token.**
+- `css/main.css` — imports tokens.css, then all component styles in section order matching the page.
+- `js/main.js` — vanilla only, no dependencies. Six self-contained IIFEs:
+  1. `[data-reveal]` scroll-reveal via IntersectionObserver (auto-staggers direct children of `.pillars`, `.stats`, `.compare`, `.audience`)
+  2. `.reveal` variant for hero headline
+  3. Hero parallax depth field (`#depth` SVG layers, `data-depth` attribute drives intensity)
+  4. Magnetic button effect on `.btn` / `.cta-btn`
+  5. Flow sequence player — 5-step lifecycle diagram with play/pause/reset, autoplay on viewport entry, crossfade between `.sd-pane` / `.sd-vis-pane` panels
+  6. Active nav link tracking + mobile hamburger toggle
 
 ## Design conventions
 
