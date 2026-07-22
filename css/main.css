@@ -3,6 +3,32 @@
    ============================================================= */
 @import "./tokens.css";
 
+/* =============================================================
+   SVG TOKEN BRIDGE
+   Inline SVGs hard-code oklch(...) values so they render without
+   JS. CSS attribute selectors here re-route those raw fills and
+   strokes to theme tokens, so the same markup themes cleanly in
+   both light and dark mode. Elements meant to always stay "light
+   text on dark chip" use --chip-bg / --on-chip and #fff directly.
+   ============================================================= */
+[fill="oklch(0.985 0.004 220)"]  { fill: var(--surface); }
+[fill="oklch(0.965 0.006 220)"]  { fill: var(--bg-alt); }
+[fill="oklch(0.18 0.02 230)"]    { fill: var(--ink); }
+[fill="oklch(0.34 0.02 230)"]    { fill: var(--ink-2); }
+[fill="oklch(0.52 0.015 230)"]   { fill: var(--ink-3); }
+[fill="oklch(0.32 0.045 215)"]   { fill: var(--chip-bg); }
+[fill="oklch(0.74 0.14 210)"]    { fill: var(--accent); }
+[fill="oklch(0.86 0.10 200)"]    { fill: var(--accent-2); }
+[stroke="oklch(0.88 0.01 220)"]  { stroke: var(--rule); }
+[stroke="oklch(0.93 0.008 220)"] { stroke: var(--rule-2); }
+[stroke="oklch(0.18 0.02 230)"]  { stroke: var(--ink); }
+[stroke="oklch(0.34 0.02 230)"]  { stroke: var(--ink-2); }
+[stroke="oklch(0.52 0.015 230)"] { stroke: var(--ink-3); }
+[stroke="oklch(0.32 0.045 215)"] { stroke: var(--primary); }
+[stroke="oklch(0.74 0.14 210)"]  { stroke: var(--accent); }
+[stop-color="oklch(0.74 0.14 210)"]  { stop-color: var(--accent); }
+[stop-color="oklch(0.32 0.045 215)"] { stop-color: var(--primary); }
+
 /* ---- Reset & base ---- */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 html {
@@ -181,9 +207,14 @@ section {
   height: 68px;
   display: flex;
   align-items: center;
-  justify-content: space-between;
   gap: 32px;
 }
+/* Brand sits left; theme-toggle (when present) or nav-cta absorbs free
+   space so the right-side controls cluster together. Nav-links stays
+   adjacent to brand. */
+.nav-inner .theme-toggle { margin-left: auto; }
+.nav-inner > .nav-cta    { margin-left: auto; }
+.nav-inner .theme-toggle ~ .nav-cta { margin-left: 0; }
 
 /* Brand wordmark */
 .brand {
@@ -235,6 +266,7 @@ section {
   display: flex;
   align-items: center;
   gap: 28px;
+  position: relative;
 }
 .nav-links a {
   padding: 24px 0;
@@ -245,20 +277,31 @@ section {
   transition: color .2s ease;
   position: relative;
 }
-.nav-links a::after {
-  content: "";
+.nav-links a:hover  { color: var(--ink); }
+.nav-links a.active { color: var(--ink); }
+
+/* Sliding underline — positioned by main.js via transform+width.
+   Using transform (not left) ensures the transition reliably animates
+   across browsers and stays GPU-accelerated. */
+.nav-indicator {
   position: absolute;
-  left: 0; right: 0; bottom: -1px;
+  bottom: -1px;
+  left: 0;
   height: 2px;
+  width: 0;
   background: var(--accent);
-  transform: scaleX(0);
-  transform-origin: center;
-  transition: transform .25s ease;
+  border-radius: 2px;
+  transform: translateX(0);
+  transform-origin: left center;
+  transition:
+    transform .42s cubic-bezier(.4, 0, .2, 1),
+    width     .42s cubic-bezier(.4, 0, .2, 1),
+    opacity   .2s ease;
+  pointer-events: none;
+  opacity: 0;
+  will-change: transform, width;
 }
-.nav-links a:hover              { color: var(--ink); }
-.nav-links a:hover::after       { transform: scaleX(0.4); }
-.nav-links a.active             { color: var(--ink); }
-.nav-links a.active::after      { transform: scaleX(1); }
+.nav-indicator.is-ready { opacity: 1; }
 
 /* Nav CTA pill */
 .nav-cta {
@@ -337,7 +380,7 @@ section {
     width: 100%;
     border-bottom: 1px solid var(--rule-2);
   }
-  .nav-links a::after { display: none; }
+  .nav-indicator { display: none; }
 }
 
 /* =============================================================
@@ -1477,3 +1520,123 @@ footer {
   transition: transform 1.6s cubic-bezier(.2, .8, .2, 1);
 }
 .ticker .col span { height: 1em; display: block; }
+
+/* =============================================================
+   THEME TOGGLE (nav)
+   ============================================================= */
+.theme-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 999px;
+  border: 1px solid var(--rule);
+  color: var(--ink-2);
+  transition: color .2s ease, border-color .2s ease, background .2s ease;
+  flex-shrink: 0;
+}
+.theme-toggle:hover { color: var(--ink); border-color: var(--ink); }
+.theme-toggle svg   { width: 16px; height: 16px; }
+.theme-toggle .sun  { display: none; }
+.theme-toggle .moon { display: block; }
+[data-theme="dark"] .theme-toggle .sun  { display: block; }
+[data-theme="dark"] .theme-toggle .moon { display: none; }
+
+/* =============================================================
+   DARK-MODE FINE ADJUSTMENTS
+   Most components inherit correctly via tokens. These are the
+   handful that need contrast tweaks in the dark palette.
+   ============================================================= */
+[data-theme="dark"] .hero-bg { opacity: .45; }
+[data-theme="dark"] .flow-wrap::before,
+[data-theme="dark"] .sd-vis::before { opacity: .30; }
+[data-theme="dark"] .depth .grid { stroke: color-mix(in oklab, var(--ink) 10%, transparent); }
+[data-theme="dark"] .cta-btn:hover { color: var(--bg); }
+
+/* Modal backdrop is always a dark scrim, regardless of theme */
+[data-theme="dark"] .modal-backdrop { background: color-mix(in oklab, #000 72%, transparent); }
+
+/* CTA card is deliberately "inverse" — keep it dark in both themes so
+   its typography direction (light on dark) doesn't collapse. The text
+   inside must stay light regardless of theme flip, so we hard-set to #fff. */
+[data-theme="dark"] .cta {
+  background: color-mix(in oklab, var(--surface) 60%, #000);
+  border: 1px solid var(--rule);
+}
+[data-theme="dark"] .cta h2,
+[data-theme="dark"] .cta-card .email             { color: #ffffff; }
+[data-theme="dark"] .cta-card .email:hover       { color: var(--accent); }
+[data-theme="dark"] .cta .eyebrow                { color: color-mix(in oklab, #fff 70%, transparent); }
+[data-theme="dark"] .cta .eyebrow::before        { background: color-mix(in oklab, #fff 70%, transparent); }
+[data-theme="dark"] .cta-card                    { background: color-mix(in oklab, #fff 6%, transparent);
+                                                   border-color: color-mix(in oklab, #fff 16%, transparent); }
+[data-theme="dark"] .cta-card .label             { color: color-mix(in oklab, #fff 55%, transparent); }
+[data-theme="dark"] .cta-btn                     { background: #ffffff; color: #000; }
+[data-theme="dark"] .cta-btn:hover               { background: var(--accent); color: #000; }
+
+/* Placeholder is intentionally lighter in dark mode */
+[data-theme="dark"] .form-field input::placeholder,
+[data-theme="dark"] .form-field textarea::placeholder { color: var(--ink-3); }
+
+/* Select chevron — swap to a lighter arrow in dark mode */
+[data-theme="dark"] .form-field select {
+  background-image: url("data:image/svg+xml,%3Csvg width='10' height='6' viewBox='0 0 10 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%23bbb' stroke-width='1.4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+}
+
+/* =============================================================
+   THEME-SWITCH CROSSFADE
+   Only active for ~450ms during a toggle (class added by JS),
+   so normal hover/focus transitions aren't slowed down. Covers
+   the color-adjacent properties broadly enough to catch surfaces,
+   text, borders, and inline SVG fills/strokes bridged via tokens. */
+html.theme-transitioning,
+html.theme-transitioning *,
+html.theme-transitioning *::before,
+html.theme-transitioning *::after {
+  transition:
+    background-color .5s ease,
+    background       .5s ease,
+    color            .5s ease,
+    border-color     .5s ease,
+    fill             .5s ease,
+    stroke           .5s ease,
+    stop-color       .5s ease,
+    box-shadow       .5s ease,
+    opacity          .3s ease !important;
+}
+
+/* Decorative pseudo-elements draw with background-image (radial-gradient
+   dot patterns, linear-gradient gridlines). background-image can't be
+   interpolated between color values, so during the theme switch they
+   would flip instantly while the underlying card fades — briefly
+   exposing gridlines against the wrong surface. Fade them out for the
+   duration of the switch instead. */
+html.theme-transitioning .data-panel::before,
+html.theme-transitioning .flow-wrap::before,
+html.theme-transitioning .sd-vis::before,
+html.theme-transitioning .hero-bg,
+html.theme-transitioning .cta::before {
+  opacity: 0 !important;
+}
+
+/* =============================================================
+   REDUCED MOTION
+   Honor prefers-reduced-motion at the CSS layer. The JS layer
+   also gates parallax / autoplay / reveals on the same media
+   query — this block cleans up decorative animation.
+   ============================================================= */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: .001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .001ms !important;
+    scroll-behavior: auto !important;
+  }
+  [data-reveal] { opacity: 1 !important; transform: none !important; }
+  .reveal       { opacity: 1 !important; transform: none !important; }
+  .depth .layer { transform: none !important; }
+  /* Kill inline SVG <animate> loops (ring pulses, dot pulses) */
+  svg animate { display: none; }
+  .panel-head .live .dot { animation: none !important; }
+}

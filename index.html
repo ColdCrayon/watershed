@@ -3,8 +3,21 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
   <title>Watershed Technologies — Real Liquidity for the Options Markets</title>
   <meta name="description" content="Watershed Technologies operates a 15ms broker-neutral options ATS — discretionary, compliant, and connected to national exchanges.">
+
+  <!-- Theme init — dark mode is temporarily disabled while the theme-switch
+       transition rough edges are being ironed out. Force light on every load
+       and clear any persisted preference so returning users don't get stuck
+       in a broken dark state. Re-enable by restoring the OS/localStorage
+       fallback logic and unhiding the .theme-toggle button in the nav. -->
+  <script>
+    (function () {
+      try { localStorage.removeItem('theme'); } catch (_) {}
+      document.documentElement.setAttribute('data-theme', 'light');
+    })();
+  </script>
 
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -27,7 +40,22 @@
       <a href="#top"       class="active">Home</a>
       <a href="#solutions">Solutions</a>
       <a href="#connect">Connect</a>
+      <span class="nav-indicator" aria-hidden="true"></span>
     </nav>
+
+    <!-- Dark theme toggle — hidden while the theme-switch transition is WIP.
+    <button class="theme-toggle" type="button" aria-pressed="false" aria-label="Switch to dark theme" title="Toggle theme">
+      <svg class="moon" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+        <path d="M16 11.5A6 6 0 1 1 8.5 4a5 5 0 0 0 7.5 7.5z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/>
+      </svg>
+      <svg class="sun" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+        <circle cx="10" cy="10" r="3.4" stroke="currentColor" stroke-width="1.4"/>
+        <g stroke="currentColor" stroke-width="1.4" stroke-linecap="round">
+          <path d="M10 2v2M10 16v2M2 10h2M16 10h2M4.2 4.2l1.4 1.4M14.4 14.4l1.4 1.4M4.2 15.8l1.4-1.4M14.4 5.6l1.4-1.4"/>
+        </g>
+      </svg>
+    </button>
+    -->
 
     <button
       class="nav-hamburger"
@@ -387,7 +415,7 @@
                   <line x1="170" y1="130" x2="250" y2="130" marker-end="url(#arrowAccent0)"/>
                 </g>
                 <rect x="252" y="100" width="92" height="60" rx="6" fill="oklch(0.32 0.045 215)"/>
-                <text x="298" y="124" font-family="Newsreader, Times New Roman, Georgia, serif" font-style="italic" font-size="14" fill="oklch(0.985 0.004 220)" text-anchor="middle">Watershed</text>
+                <text x="298" y="124" font-family="Newsreader, Times New Roman, Georgia, serif" font-style="italic" font-size="14" fill="#ffffff" text-anchor="middle">Watershed</text>
                 <text x="298" y="144" font-family="Geist Mono, ui-monospace, monospace" font-size="9" fill="oklch(0.86 0.10 200)" text-anchor="middle" letter-spacing="2">ATS</text>
               </svg>
             </div>
@@ -397,8 +425,8 @@
               <svg viewBox="0 0 360 240" fill="none" role="img" aria-label="Private sealed auction with six liquidity providers">
                 <rect x="40" y="30" width="280" height="180" rx="10" stroke="oklch(0.32 0.045 215)" stroke-width="1.5" stroke-dasharray="6 4" fill="none"/>
                 <text x="180" y="22" font-family="Geist Mono, ui-monospace, monospace" font-size="10" fill="oklch(0.32 0.045 215)" text-anchor="middle" letter-spacing="2">SEALED · NO PRICE OUT</text>
-                <circle cx="180" cy="120" r="22" fill="oklch(0.18 0.02 230)"/>
-                <text x="180" y="124" font-family="Geist Mono, ui-monospace, monospace" font-size="10" fill="oklch(0.985 0.004 220)" text-anchor="middle" letter-spacing="1">ORDER</text>
+                <circle cx="180" cy="120" r="22" fill="oklch(0.32 0.045 215)"/>
+                <text x="180" y="124" font-family="Geist Mono, ui-monospace, monospace" font-size="10" fill="#ffffff" text-anchor="middle" letter-spacing="1">ORDER</text>
                 <g font-family="Geist Mono, ui-monospace, monospace" font-size="9" fill="oklch(0.34 0.02 230)">
                   <g><circle cx="80"  cy="70"  r="14" stroke="oklch(0.34 0.02 230)" stroke-width="1.2" fill="oklch(0.985 0.004 220)"/><text x="80"  y="73"  text-anchor="middle">LP1</text></g>
                   <g><circle cx="180" cy="55"  r="14" stroke="oklch(0.34 0.02 230)" stroke-width="1.2" fill="oklch(0.985 0.004 220)"/><text x="180" y="58"  text-anchor="middle">LP2</text></g>
@@ -455,7 +483,7 @@
             <div class="sd-vis-pane" data-vis="3">
               <svg viewBox="0 0 360 240" fill="none" role="img" aria-label="Cross ticket sent from ATS to National Exchange">
                 <rect x="20"  y="90"  width="100" height="60" rx="6" fill="oklch(0.32 0.045 215)"/>
-                <text x="70"  y="116" font-family="Newsreader, Times New Roman, Georgia, serif" font-style="italic" font-size="14" fill="oklch(0.985 0.004 220)" text-anchor="middle">ATS</text>
+                <text x="70"  y="116" font-family="Newsreader, Times New Roman, Georgia, serif" font-style="italic" font-size="14" fill="#ffffff" text-anchor="middle">ATS</text>
                 <text x="70"  y="134" font-family="Geist Mono, ui-monospace, monospace" font-size="9" fill="oklch(0.86 0.10 200)" text-anchor="middle" letter-spacing="2">MATCHED</text>
                 <rect x="148" y="92"  width="80"  height="56" rx="4" stroke="oklch(0.18 0.02 230)" stroke-width="1.4" fill="oklch(0.985 0.004 220)"/>
                 <path d="M148 92 L 188 124 L 228 92" stroke="oklch(0.18 0.02 230)" stroke-width="1.2" fill="none"/>

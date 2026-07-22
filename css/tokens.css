@@ -25,6 +25,10 @@
   --accent:    oklch(0.74 0.14 210);     /* electric cyan */
   --accent-2:  oklch(0.86 0.10 200);     /* lighter cyan for glow effects */
 
+  /* ---- Color: constants (do NOT flip in dark mode) ---- */
+  --chip-bg:   oklch(0.32 0.045 215);    /* always-dark chip fill for SVG glyphs */
+  --on-chip:   #ffffff;                   /* always-light text on chip-bg */
+
   /* ---- Layout ---- */
   --maxw:   1400px;
   --gutter: clamp(20px, 4vw, 56px);
@@ -33,4 +37,31 @@
   --mono:    "Geist Mono", ui-monospace, monospace;
   --display: "Newsreader", "Times New Roman", Georgia, serif;
   --body:    "Geist", system-ui, sans-serif;
+
+  color-scheme: light;
+}
+
+/* =============================================================
+   DARK THEME
+   Overrides only the semantic layer — --chip-bg / --on-chip
+   stay constant so SVG chips remain legible in both themes.
+   ============================================================= */
+[data-theme="dark"] {
+  --bg:        oklch(0.16 0.012 230);
+  --bg-alt:    oklch(0.20 0.014 230);
+  --surface:   oklch(0.22 0.016 230);
+
+  --ink:       oklch(0.96 0.004 220);
+  --ink-2:     oklch(0.78 0.008 220);
+  --ink-3:     oklch(0.60 0.012 220);
+
+  --rule:      oklch(0.32 0.014 230);
+  --rule-2:    oklch(0.26 0.014 230);
+
+  --primary:   oklch(0.68 0.09 210);     /* text/accent role — brighter in dark */
+  --primary-2: oklch(0.78 0.10 210);
+  --accent:    oklch(0.78 0.14 210);
+  --accent-2:  oklch(0.68 0.11 200);
+
+  color-scheme: dark;
 }

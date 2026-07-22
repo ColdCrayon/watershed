@@ -3,8 +3,51 @@
    Vanilla JS only. No framework dependencies.
    ============================================================= */
 
+// Reduced-motion gate — respected by parallax, flow autoplay, etc.
+const prefersReducedMotion = () =>
+  window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+// Theme toggle — persists user choice; falls back to prefers-color-scheme.
+// The initial <html data-theme=...> is set by an inline script in <head>
+// to prevent FOUC. This IIFE only handles the toggle button.
+(() => {
+  const btn = document.querySelector('.theme-toggle');
+  if (!btn) return;
+
+  const sync = () => {
+    const t = document.documentElement.getAttribute('data-theme') || 'light';
+    btn.setAttribute('aria-pressed', t === 'dark' ? 'true' : 'false');
+    btn.setAttribute('aria-label', t === 'dark' ? 'Switch to light theme' : 'Switch to dark theme');
+  };
+  sync();
+
+  let clearTimer = null;
+  btn.addEventListener('click', () => {
+    const next = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+    // Add the crossfade class so all color-adjacent properties transition
+    // together for the duration of the switch, then remove it so normal
+    // hover/focus transitions run at their usual speed.
+    if (!prefersReducedMotion()) {
+      document.documentElement.classList.add('theme-transitioning');
+      if (clearTimer) clearTimeout(clearTimer);
+      clearTimer = setTimeout(() => {
+        document.documentElement.classList.remove('theme-transitioning');
+      }, 620);
+    }
+    document.documentElement.setAttribute('data-theme', next);
+    try { localStorage.setItem('theme', next); } catch (_) {}
+    sync();
+  });
+})();
+
 // Scroll reveal — [data-reveal] elements fade + rise on enter
 (() => {
+  // If the user prefers reduced motion, show everything immediately.
+  if (prefersReducedMotion()) {
+    document.querySelectorAll('[data-reveal]').forEach(el => el.classList.add('is-in'));
+    document.querySelectorAll('.reveal').forEach(el => el.classList.add('in'));
+    return;
+  }
   const io = new IntersectionObserver((entries) => {
     entries.forEach(e => {
       if (e.isIntersecting) {
@@ -34,6 +77,7 @@
 
 // Scroll reveal — .reveal class variant (hero headline)
 (() => {
+  if (prefersReducedMotion()) return; // already unhidden above
   const obs = new IntersectionObserver((entries) => {
     entries.forEach(e => {
       if (e.isIntersecting) { e.target.classList.add('in'); obs.unobserve(e.target); }
@@ -42,42 +86,36 @@
   document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
 })();
 
-// Hero parallax depth field — responds to mouse + scroll
+// Hero parallax depth field — mouse + scroll driven, rAF-throttled.
+// Disabled under prefers-reduced-motion.
 (() => {
   const depth = document.getElementById('depth');
-  if (!depth) return;
+  if (!depth || prefersReducedMotion()) return;
   const layers = depth.querySelectorAll('.layer');
-  let mx = 0, my = 0, sy = 0;
+  let mx = 0, my = 0, sy = 0, queued = false;
 
   function apply() {
+    queued = false;
     layers.forEach(l => {
       const d = parseFloat(l.dataset.depth || '10');
       l.style.transform = `translate3d(${mx * d}px, ${my * d + sy * (d * 0.6)}px, 0)`;
     });
   }
+  function schedule() {
+    if (queued) return;
+    queued = true;
+    requestAnimationFrame(apply);
+  }
   window.addEventListener('mousemove', e => {
     mx = (e.clientX / window.innerWidth  - 0.5);
     my = (e.clientY / window.innerHeight - 0.5);
-    apply();
+    schedule();
   }, { passive: true });
   window.addEventListener('scroll', () => {
     sy = Math.min(window.scrollY / 800, 1);
-    apply();
+    schedule();
   }, { passive: true });
   apply();
-})();
-
-// Magnetic buttons — subtle cursor-follow on hover
-(() => {
-  document.querySelectorAll('.btn, .cta-btn').forEach(btn => {
-    btn.addEventListener('mousemove', e => {
-      const r = btn.getBoundingClientRect();
-      const x = (e.clientX - r.left - r.width  / 2) * 0.25;
-      const y = (e.clientY - r.top  - r.height / 2) * 0.25;
-      btn.style.transform = `translate(${x}px, ${y}px)`;
-    });
-    btn.addEventListener('mouseleave', () => { btn.style.transform = ''; });
-  });
 })();
 
 // Hero data panel — deterministic order-ladder bars
@@ -154,10 +192,15 @@
     playing = true;
     if (playBtn) { playBtn.textContent = '❚❚ Pause'; playBtn.classList.add('is-on'); }
     const tick = () => {
-      setStep(idx < steps.length - 1 ? idx + 1 : 0);
-      timer = setTimeout(tick, 2400);
+      // Play once through, then rest at the last step. User can hit Reset or click a step.
+      if (idx < steps.length - 1) {
+        setStep(idx + 1);
+        timer = setTimeout(tick, 2600);
+      } else {
+        pause();
+      }
     };
-    timer = setTimeout(tick, 2400);
+    timer = setTimeout(tick, 2600);
   }
 
   function pause() {
@@ -166,33 +209,57 @@
     if (timer) { clearTimeout(timer); timer = null; }
   }
 
-  if (playBtn)  playBtn.addEventListener('click',  () => playing ? pause() : play());
+  if (playBtn)  playBtn.addEventListener('click',  () => {
+    if (playing) { pause(); return; }
+    // Re-clicking Play after the sequence finished starts over.
+    if (idx >= steps.length - 1) setStep(0);
+    play();
+  });
   if (resetBtn) resetBtn.addEventListener('click', () => { pause(); userPaused = true; setStep(0); });
   steps.forEach((s, i) => s.addEventListener('click', () => { pause(); userPaused = true; setStep(i); }));
 
   requestAnimationFrame(() => setStep(0));
   window.addEventListener('resize', () => setStep(idx));
 
-  // Auto-play when the flow row enters the viewport
-  const obs = new IntersectionObserver((entries) => {
-    entries.forEach(e => {
-      if (e.isIntersecting && !playing && !userPaused) play();
-    });
-  }, { threshold: 0.4 });
-  const flowNode = document.getElementById('flow');
-  if (flowNode) obs.observe(flowNode);
+  // Auto-play once when the flow row enters the viewport (respect reduced motion)
+  if (!prefersReducedMotion()) {
+    const obs = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting && !playing && !userPaused) play();
+      });
+    }, { threshold: 0.4 });
+    const flowNode = document.getElementById('flow');
+    if (flowNode) obs.observe(flowNode);
+  }
 })();
 
 // Active nav link — highlights whichever section is at the top of the viewport
+// and slides the shared underline indicator to match.
 (() => {
-  const links = Array.from(document.querySelectorAll('.nav-links a'));
+  const nav       = document.querySelector('.nav-links');
+  const links     = Array.from(document.querySelectorAll('.nav-links a'));
+  const indicator = document.querySelector('.nav-indicator');
   const map = links
     .map(a => ({ link: a, target: document.querySelector(a.getAttribute('href')) }))
     .filter(x => x.target);
   if (!map.length) return;
   const navH = 80;
+  let queued = false;
+
+  function moveIndicator(el) {
+    if (!indicator || !nav || !el) return;
+    // Only run on desktop layout — mobile hides the indicator via CSS.
+    if (window.innerWidth <= 640) return;
+    const navRect = nav.getBoundingClientRect();
+    const r = el.getBoundingClientRect();
+    const x = r.left - navRect.left;
+    indicator.style.transform = `translateX(${x}px)`;
+    indicator.style.width     = r.width + 'px';
+    indicator.classList.add('is-ready');
+  }
 
   function update() {
+    queued = false;
     const y = window.scrollY + navH + 4;
     let bestIdx = 0;
     for (let i = 0; i < map.length; i++) {
@@ -202,10 +269,29 @@
       bestIdx = map.length - 1;
     }
     map.forEach((m, i) => m.link.classList.toggle('active', i === bestIdx));
+    moveIndicator(map[bestIdx].link);
   }
+  function schedule() {
+    if (queued) return;
+    queued = true;
+    requestAnimationFrame(update);
+  }
+
+  // Hover preview — indicator eases toward the hovered link
+  links.forEach(link => {
+    link.addEventListener('mouseenter', () => moveIndicator(link));
+    link.addEventListener('mouseleave', () => {
+      const active = map.find(m => m.link.classList.contains('active'));
+      if (active) moveIndicator(active.link);
+    });
+  });
+
   update();
-  window.addEventListener('scroll', update, { passive: true });
+  // Delay one frame so fonts have settled before we measure widths
+  requestAnimationFrame(update);
+  window.addEventListener('scroll', schedule, { passive: true });
   window.addEventListener('resize', update);
+  window.addEventListener('load', update);
 })();
 
 // Mobile hamburger nav toggle
